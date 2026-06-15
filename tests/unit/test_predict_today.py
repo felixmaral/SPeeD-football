@@ -68,3 +68,40 @@ async def test_with_bundled_json_ratings() -> None:
     uc = _use_case(JsonRatingsRepository(data_dir))
     predictions = await uc.execute()
     assert len(predictions) == 3
+
+
+async def test_recent_form_changes_prediction() -> None:
+    from wcpredictor.application.ports.recent_results_repo import TeamMatchResult
+    from wcpredictor.infrastructure.fixtures.recent_results import MockRecentResultsRepository
+
+    ratings = _RatingsStub(
+        {
+            "Spain": TeamRating(team="Spain", attack=1.3, defense=0.9),
+            "Cape Verde Islands": TeamRating(team="Cape Verde Islands", attack=0.9, defense=1.2),
+        }
+    )
+    # Spain (mock home id=1) llega con una gran racha reciente vs rival medio.
+    recent = {
+        1: [
+            TeamMatchResult(date(2026, 6, 12), 4, 0, "Rival"),
+            TeamMatchResult(date(2026, 6, 8), 3, 0, "Rival"),
+            TeamMatchResult(date(2026, 6, 4), 3, 1, "Rival"),
+        ]
+    }
+    base = await _use_case(ratings).execute(date(2026, 6, 15))
+    with_form = await PredictTodayMatches(
+        fixture_repo=MockFixtureRepository(),
+        ratings_repo=ratings,
+        league=WorldCupLeague(),
+        recent_results_repo=MockRecentResultsRepository(recent=recent),
+        season=2026,
+        clock=lambda: date(2026, 6, 15),
+    ).execute(date(2026, 6, 15))
+    assert with_form[0].probabilities.home_win > base[0].probabilities.home_win
+
+
+async def test_no_recent_repo_keeps_behaviour() -> None:
+    ratings = _RatingsStub({"Spain": TeamRating(team="Spain", attack=1.3, defense=0.9)})
+    a = await _use_case(ratings).execute(date(2026, 6, 15))
+    b = await _use_case(ratings).execute(date(2026, 6, 15))
+    assert a[0].probabilities.home_win == b[0].probabilities.home_win

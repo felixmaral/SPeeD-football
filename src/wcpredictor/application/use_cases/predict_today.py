@@ -8,7 +8,13 @@ from datetime import date
 
 from wcpredictor.application.ports.fixture_repo import FixtureRepository
 from wcpredictor.application.ports.ratings_repo import RatingsRepository
+from wcpredictor.application.ports.recent_results_repo import (
+    RecentResultsRepository,
+    TeamMatchResult,
+)
 from wcpredictor.domain.entities.match import Match
+from wcpredictor.domain.entities.team import Team
+from wcpredictor.domain.services.form import FormAdjuster, RecentResult
 from wcpredictor.domain.services.predictor import MatchPrediction, Predictor
 from wcpredictor.infrastructure.leagues.base import LeaguePlugin
 
@@ -21,9 +27,13 @@ def _today() -> date:
 class PredictTodayMatches:
     """Orquesta la predicción de todos los partidos de hoy de una liga.
 
-    Es un adaptador de aplicación: combina los puertos (fixtures, ratings), el
-    plugin de liga y el servicio de dominio `Predictor`, sin lógica estadística
-    propia.
+    Es un adaptador de aplicación: combina los puertos (fixtures, ratings, forma
+    reciente), el plugin de liga y el servicio de dominio `Predictor`, sin lógica
+    estadística propia.
+
+    Si se proporciona `recent_results_repo` (+ `form_adjuster` + `season`), la fuerza
+    de cada equipo se ajusta por su forma reciente antes de predecir. Si no, el
+    comportamiento es el de la beta (solo ratings entrenados).
     """
 
     fixture_repo: FixtureRepository
@@ -31,6 +41,9 @@ class PredictTodayMatches:
     league: LeaguePlugin
     predictor: Predictor = field(default_factory=Predictor)
     clock: Callable[[], date] = _today
+    recent_results_repo: RecentResultsRepository | None = None
+    form_adjuster: FormAdjuster = field(default_factory=FormAdjuster)
+    season: int | None = None
 
     async def execute(self, day: date | None = None) -> list[MatchPrediction]:
         """Devuelve las predicciones de los partidos de `day` (hoy por defecto)."""
@@ -40,21 +53,49 @@ class PredictTodayMatches:
         predictions: list[MatchPrediction] = []
         for match in matches:
             enriched = self._enrich(match)
+            enriched = await self._apply_form(enriched, target)
             lineup = await self.fixture_repo.get_lineup_availability(match.id)
             predictions.append(self.predictor.predict(enriched, lineup.players))
         return predictions
 
     def _enrich(self, match: Match) -> Match:
-        """Aplica los ratings entrenados a los equipos del partido (por nombre).
-
-        Si un equipo no tiene rating entrenado, conserva su fuerza actual.
-        """
-        namespace = self.league.ratings_namespace()
-        home, away = match.home, match.away
-        rh = self.ratings_repo.get_rating(namespace, home.name)
-        ra = self.ratings_repo.get_rating(namespace, away.name)
-        if rh is not None:
-            home = replace(home, attack=rh.attack, defense=rh.defense)
-        if ra is not None:
-            away = replace(away, attack=ra.attack, defense=ra.defense)
+        """Aplica los ratings entrenados a los equipos del partido (por nombre)."""
+        home = self._rated(match.home)
+        away = self._rated(match.away)
         return replace(match, home=home, away=away)
+
+    def _rated(self, team: Team) -> Team:
+        rating = self.ratings_repo.get_rating(self.league.ratings_namespace(), team.name)
+        if rating is None:
+            return team
+        return replace(team, attack=rating.attack, defense=rating.defense)
+
+    async def _apply_form(self, match: Match, as_of: date) -> Match:
+        """Ajusta la fuerza de cada equipo por su forma reciente, si está configurado."""
+        if self.recent_results_repo is None or self.season is None:
+            return match
+        home = await self._form_for(match.home, as_of)
+        away = await self._form_for(match.away, as_of)
+        return replace(match, home=home, away=away)
+
+    async def _form_for(self, team: Team, as_of: date) -> Team:
+        assert self.recent_results_repo is not None
+        assert self.season is not None
+        raw = await self.recent_results_repo.get_recent_results(
+            team.id, self.season, self.league.league_id
+        )
+        results = [self._to_recent(r) for r in raw]
+        return self.form_adjuster.adjust(team, results, as_of)
+
+    def _to_recent(self, result: TeamMatchResult) -> RecentResult:
+        """Convierte un resultado en crudo en `RecentResult` con la fuerza del rival."""
+        opp = self.ratings_repo.get_rating(self.league.ratings_namespace(), result.opponent_name)
+        opp_attack = opp.attack if opp is not None else 1.0
+        opp_defense = opp.defense if opp is not None else 1.0
+        return RecentResult(
+            when=result.when,
+            goals_for=result.goals_for,
+            goals_against=result.goals_against,
+            opponent_attack=opp_attack,
+            opponent_defense=opp_defense,
+        )
