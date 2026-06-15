@@ -66,7 +66,18 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
+def _enable_system_trust() -> None:
+    """Usa el almacén de certificados del sistema operativo para la validación TLS."""
+    try:
+        import truststore
+
+        truststore.inject_into_ssl()
+    except Exception:
+        pass
+
+
 def main(argv: list[str] | None = None) -> int:
+    _enable_system_trust()
     args = _parse_args(argv)
     day = date.fromisoformat(args.date) if args.date else None
     settings = Settings()

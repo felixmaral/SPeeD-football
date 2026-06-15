@@ -78,8 +78,8 @@ resultado exacto (local en horizontal, visitante en vertical).
 
 - **API-Football free tier:** ~100 req/día y ventana de fechas restringida; pensado
   para desarrollo. Las predicciones se cachean (ratings en JSON) para mitigarlo.
-- **Proxy TLS corporativo:** en redes con inspección TLS, configura el CA corporativo
-  o usa el modo mock. El adaptador permite ajustar la verificación.
+- **Validación TLS:** el lanzador usa el almacén de certificados del sistema operativo
+  (`truststore`) para la verificación TLS en el modo real.
 - **Ratings entrenados:** `data/ratings/world_cup.json` se genera con
   `scripts/train_ratings.py` a partir de **todos los partidos internacionales**
   (martj42), con MLE Poisson ponderado por recencia e importancia del torneo sobre un
