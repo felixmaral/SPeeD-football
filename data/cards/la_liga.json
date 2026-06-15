@@ -1,0 +1,142 @@
+[
+  {
+    "team": "Getafe",
+    "cards_per_match": 3.079,
+    "fouls_committed_per_match": 15.842,
+    "fouls_drawn_per_match": 13.316,
+    "tendency": 1.307
+  },
+  {
+    "team": "Las Palmas",
+    "cards_per_match": 3.0,
+    "fouls_committed_per_match": 11.895,
+    "fouls_drawn_per_match": 12.158,
+    "tendency": 1.273
+  },
+  {
+    "team": "Alavés",
+    "cards_per_match": 2.947,
+    "fouls_committed_per_match": 16.395,
+    "fouls_drawn_per_match": 12.526,
+    "tendency": 1.251
+  },
+  {
+    "team": "Sevilla",
+    "cards_per_match": 2.789,
+    "fouls_committed_per_match": 13.0,
+    "fouls_drawn_per_match": 10.579,
+    "tendency": 1.184
+  },
+  {
+    "team": "Villarreal",
+    "cards_per_match": 2.632,
+    "fouls_committed_per_match": 11.632,
+    "fouls_drawn_per_match": 12.184,
+    "tendency": 1.117
+  },
+  {
+    "team": "Rayo Vallecano",
+    "cards_per_match": 2.605,
+    "fouls_committed_per_match": 13.737,
+    "fouls_drawn_per_match": 10.289,
+    "tendency": 1.105
+  },
+  {
+    "team": "Valladolid",
+    "cards_per_match": 2.526,
+    "fouls_committed_per_match": 12.079,
+    "fouls_drawn_per_match": 12.789,
+    "tendency": 1.072
+  },
+  {
+    "team": "Celta Vigo",
+    "cards_per_match": 2.368,
+    "fouls_committed_per_match": 12.158,
+    "fouls_drawn_per_match": 11.474,
+    "tendency": 1.005
+  },
+  {
+    "team": "Espanyol",
+    "cards_per_match": 2.342,
+    "fouls_committed_per_match": 13.105,
+    "fouls_drawn_per_match": 11.368,
+    "tendency": 0.994
+  },
+  {
+    "team": "Real Sociedad",
+    "cards_per_match": 2.342,
+    "fouls_committed_per_match": 13.184,
+    "fouls_drawn_per_match": 10.974,
+    "tendency": 0.994
+  },
+  {
+    "team": "Leganés",
+    "cards_per_match": 2.316,
+    "fouls_committed_per_match": 13.237,
+    "fouls_drawn_per_match": 12.368,
+    "tendency": 0.983
+  },
+  {
+    "team": "Osasuna",
+    "cards_per_match": 2.316,
+    "fouls_committed_per_match": 13.368,
+    "fouls_drawn_per_match": 9.974,
+    "tendency": 0.983
+  },
+  {
+    "team": "Mallorca",
+    "cards_per_match": 2.289,
+    "fouls_committed_per_match": 12.263,
+    "fouls_drawn_per_match": 11.368,
+    "tendency": 0.971
+  },
+  {
+    "team": "Valencia",
+    "cards_per_match": 2.289,
+    "fouls_committed_per_match": 11.632,
+    "fouls_drawn_per_match": 11.737,
+    "tendency": 0.971
+  },
+  {
+    "team": "Real Betis",
+    "cards_per_match": 2.079,
+    "fouls_committed_per_match": 11.395,
+    "fouls_drawn_per_match": 13.789,
+    "tendency": 0.882
+  },
+  {
+    "team": "Atlético Madrid",
+    "cards_per_match": 2.053,
+    "fouls_committed_per_match": 10.842,
+    "fouls_drawn_per_match": 11.237,
+    "tendency": 0.871
+  },
+  {
+    "team": "Girona",
+    "cards_per_match": 2.053,
+    "fouls_committed_per_match": 11.5,
+    "fouls_drawn_per_match": 11.553,
+    "tendency": 0.871
+  },
+  {
+    "team": "Athletic Club",
+    "cards_per_match": 1.763,
+    "fouls_committed_per_match": 12.711,
+    "fouls_drawn_per_match": 10.158,
+    "tendency": 0.748
+  },
+  {
+    "team": "Barcelona",
+    "cards_per_match": 1.737,
+    "fouls_committed_per_match": 9.684,
+    "fouls_drawn_per_match": 12.237,
+    "tendency": 0.737
+  },
+  {
+    "team": "Real Madrid",
+    "cards_per_match": 1.605,
+    "fouls_committed_per_match": 8.737,
+    "fouls_drawn_per_match": 13.632,
+    "tendency": 0.681
+  }
+]
