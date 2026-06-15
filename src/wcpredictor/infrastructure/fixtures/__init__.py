@@ -3,13 +3,13 @@
 from wcpredictor.infrastructure.fixtures.api_football import ApiFootballFixtureRepository
 from wcpredictor.infrastructure.fixtures.mock import MockFixtureRepository
 from wcpredictor.infrastructure.fixtures.recent_results import (
-    ApiFootballRecentResultsRepository,
+    Martj42RecentResultsRepository,
     MockRecentResultsRepository,
 )
 
 __all__ = [
     "ApiFootballFixtureRepository",
-    "ApiFootballRecentResultsRepository",
+    "Martj42RecentResultsRepository",
     "MockFixtureRepository",
     "MockRecentResultsRepository",
 ]

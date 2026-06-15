@@ -43,7 +43,7 @@ class PredictTodayMatches:
     clock: Callable[[], date] = _today
     recent_results_repo: RecentResultsRepository | None = None
     form_adjuster: FormAdjuster = field(default_factory=FormAdjuster)
-    season: int | None = None
+    recent_limit: int = 8
 
     async def execute(self, day: date | None = None) -> list[MatchPrediction]:
         """Devuelve las predicciones de los partidos de `day` (hoy por defecto)."""
@@ -72,7 +72,7 @@ class PredictTodayMatches:
 
     async def _apply_form(self, match: Match, as_of: date) -> Match:
         """Ajusta la fuerza de cada equipo por su forma reciente, si está configurado."""
-        if self.recent_results_repo is None or self.season is None:
+        if self.recent_results_repo is None:
             return match
         home = await self._form_for(match.home, as_of)
         away = await self._form_for(match.away, as_of)
@@ -80,10 +80,7 @@ class PredictTodayMatches:
 
     async def _form_for(self, team: Team, as_of: date) -> Team:
         assert self.recent_results_repo is not None
-        assert self.season is not None
-        raw = await self.recent_results_repo.get_recent_results(
-            team.id, self.season, self.league.league_id
-        )
+        raw = await self.recent_results_repo.get_recent_results(team.name, self.recent_limit)
         results = [self._to_recent(r) for r in raw]
         return self.form_adjuster.adjust(team, results, as_of)
 
