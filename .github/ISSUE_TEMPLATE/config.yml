@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Plan de desarrollo
+    url: https://github.com/felixmaral/speed-world-cup/blob/develop/DEVELOPMENT_PLAN.md
+    about: Roadmap, fases y reglas de desarrollo del proyecto.
