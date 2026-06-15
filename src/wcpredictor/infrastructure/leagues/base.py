@@ -34,6 +34,15 @@ class LeaguePlugin(ABC):
         """Namespace bajo el que se guardan los ratings de esta liga."""
         raise NotImplementedError
 
+    @property
+    def neutral_venue(self) -> bool:
+        """Si los partidos se juegan en sede neutral (sin ventaja de local real).
+
+        Por defecto False (ligas de clubes con local/visitante). Las competiciones
+        a partido único en sede neutral (p.ej. Mundial) deben devolver True.
+        """
+        return False
+
 
 class LeagueRegistry:
     """Registro de plugins de liga, indexado por `league_id`."""

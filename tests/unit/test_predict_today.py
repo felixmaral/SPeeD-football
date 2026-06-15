@@ -134,3 +134,41 @@ async def test_h2h_changes_prediction() -> None:
         clock=lambda: _date(2026, 6, 15),
     ).execute(_date(2026, 6, 15))
     assert with_h2h[0].probabilities.home_win > base[0].probabilities.home_win
+
+
+async def test_world_cup_neutral_venue_removes_home_advantage() -> None:
+    from datetime import date as _date
+
+    # Mismo rating ambos equipos: en sede neutral, local y visitante ~simétricos.
+    ratings = _RatingsStub(
+        {
+            "Spain": TeamRating(team="Spain", attack=1.2, defense=0.9),
+            "Cape Verde Islands": TeamRating(team="Cape Verde Islands", attack=1.2, defense=0.9),
+        }
+    )
+    preds = await _use_case(ratings).execute(_date(2026, 6, 15))
+    p = preds[0].probabilities
+    # WorldCup es neutral -> sin ventaja de local -> empate equilibrado entre iguales.
+    assert abs(p.home_win - p.away_win) < 0.02
+
+
+async def test_laliga_keeps_home_advantage() -> None:
+    from datetime import date as _date
+
+    from wcpredictor.infrastructure.leagues.la_liga import LaLigaLeague
+
+    ratings = _RatingsStub(
+        {
+            "Spain": TeamRating(team="Spain", attack=1.2, defense=0.9),
+            "Cape Verde Islands": TeamRating(team="Cape Verde Islands", attack=1.2, defense=0.9),
+        }
+    )
+    uc = PredictTodayMatches(
+        fixture_repo=MockFixtureRepository(),
+        ratings_repo=ratings,
+        league=LaLigaLeague(),
+        clock=lambda: _date(2026, 6, 15),
+    )
+    # MockFixtureRepository devuelve partidos con league_id de WorldCup, no de LaLiga,
+    # así que filtrará 0; validamos el predictor efectivo directamente.
+    assert uc._effective_predictor().dixon_coles.home_advantage > 1.0

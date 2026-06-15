@@ -38,3 +38,7 @@ class WorldCupLeague(LeaguePlugin):
 
     def ratings_namespace(self) -> str:
         return "world_cup"
+
+    @property
+    def neutral_venue(self) -> bool:
+        return True

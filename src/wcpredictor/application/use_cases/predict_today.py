@@ -77,13 +77,14 @@ class PredictTodayMatches:
         target = day or self.clock()
         matches = await self.fixture_repo.get_fixtures_for_date(target, self.league.league_id)
 
+        predictor = self._effective_predictor()
         predictions: list[MatchPrediction] = []
         for match in matches:
             enriched = self._enrich(match)
             enriched = await self._apply_form(enriched, target)
             enriched = await self._apply_h2h(enriched, target)
             lineup = await self.fixture_repo.get_lineup_availability(match.id)
-            predictions.append(self.predictor.predict(enriched, lineup.players))
+            predictions.append(predictor.predict(enriched, lineup.players))
         return predictions
 
     async def execute_explained(self, day: date | None = None) -> list[ExplainedPrediction]:
@@ -91,23 +92,31 @@ class PredictTodayMatches:
         target = day or self.clock()
         matches = await self.fixture_repo.get_fixtures_for_date(target, self.league.league_id)
 
+        predictor = self._effective_predictor()
         out: list[ExplainedPrediction] = []
         for match in matches:
             base = self._enrich(match)
-            stages = [self._stage("Base (ratings)", base)]
+            stages = [self._stage(predictor, "Base (ratings)", base)]
             formed = await self._apply_form(base, target)
             if self.recent_results_repo is not None:
-                stages.append(self._stage("+ Forma reciente", formed))
+                stages.append(self._stage(predictor, "+ Forma reciente", formed))
             with_h2h = await self._apply_h2h(formed, target)
             if self.recent_results_repo is not None:
-                stages.append(self._stage("+ H2H", with_h2h))
+                stages.append(self._stage(predictor, "+ H2H", with_h2h))
             lineup = await self.fixture_repo.get_lineup_availability(match.id)
-            prediction = self.predictor.predict(with_h2h, lineup.players)
+            prediction = predictor.predict(with_h2h, lineup.players)
             out.append(ExplainedPrediction(prediction=prediction, stages=stages))
         return out
 
-    def _stage(self, label: str, match: Match) -> StageProbabilities:
-        p = self.predictor.predict(match).probabilities
+    def _effective_predictor(self) -> Predictor:
+        """Predictor ajustado a la liga: sin ventaja de local en sede neutral."""
+        if not self.league.neutral_venue:
+            return self.predictor
+        neutral_dc = replace(self.predictor.dixon_coles, home_advantage=1.0)
+        return replace(self.predictor, dixon_coles=neutral_dc)
+
+    def _stage(self, predictor: Predictor, label: str, match: Match) -> StageProbabilities:
+        p = predictor.predict(match).probabilities
         return StageProbabilities(
             label=label,
             home_win=p.home_win,
