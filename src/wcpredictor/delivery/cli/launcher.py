@@ -13,7 +13,10 @@ from pathlib import Path
 
 from wcpredictor.application.ports.fixture_repo import FixtureRepository
 from wcpredictor.application.ports.notifier import Notifier
-from wcpredictor.application.use_cases.predict_today import PredictTodayMatches
+from wcpredictor.application.use_cases.predict_today import (
+    PredictTodayMatches,
+    StageProbabilities,
+)
 from wcpredictor.config.settings import Settings
 from wcpredictor.infrastructure.fixtures.api_football import ApiFootballFixtureRepository
 from wcpredictor.infrastructure.fixtures.mock import MockFixtureRepository
@@ -49,24 +52,53 @@ def build_use_case(
     )
 
 
+def _stage_block(stages: list[StageProbabilities]) -> str:
+    """Formatea el desglose por variable (local/empate/visitante · goles)."""
+    lines = ["", "Desglose por variable (local/empate/visitante · goles):"]
+    for s in stages:
+        lines.append(
+            f"  {s.label:<18} {s.home_win:.0%}/{s.draw:.0%}/{s.away_win:.0%}"
+            f"   {s.lambda_home:.2f}-{s.lambda_away:.2f}"
+        )
+    return "\n".join(lines)
+
+
 async def run(
     use_case: PredictTodayMatches,
     notifier: Notifier,
     day: date | None = None,
+    *,
+    explain: bool = False,
 ) -> int:
     """Ejecuta el caso de uso y notifica las predicciones. Devuelve el nº de partidos."""
-    predictions = await use_case.execute(day)
-    if not predictions:
+    if not explain:
+        predictions = await use_case.execute(day)
+        if not predictions:
+            await notifier.send_prediction("console", "No hay partidos para la fecha indicada.")
+            return 0
+        for prediction in predictions:
+            await notifier.send_prediction("console", prediction.report)
+        return len(predictions)
+
+    explained = await use_case.execute_explained(day)
+    if not explained:
         await notifier.send_prediction("console", "No hay partidos para la fecha indicada.")
         return 0
-    for prediction in predictions:
-        await notifier.send_prediction("console", prediction.report)
-    return len(predictions)
+    for ep in explained:
+        await notifier.send_prediction(
+            "console", ep.prediction.report + "\n" + _stage_block(ep.stages)
+        )
+    return len(explained)
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Predicciones del día (wcpredictor).")
     parser.add_argument("--date", help="Fecha en formato YYYY-MM-DD (por defecto: hoy)")
+    parser.add_argument(
+        "--explain",
+        action="store_true",
+        help="Añade el desglose por variable (Base → + Forma) a cada informe",
+    )
     return parser.parse_args(argv)
 
 
@@ -86,7 +118,7 @@ def main(argv: list[str] | None = None) -> int:
     day = date.fromisoformat(args.date) if args.date else None
     settings = Settings()
     use_case = build_use_case(settings)
-    return asyncio.run(run(use_case, ConsoleNotifier(), day))
+    return asyncio.run(run(use_case, ConsoleNotifier(), day, explain=args.explain))
 
 
 if __name__ == "__main__":

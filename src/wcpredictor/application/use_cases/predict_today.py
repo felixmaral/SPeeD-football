@@ -24,6 +24,26 @@ def _today() -> date:
 
 
 @dataclass(frozen=True, slots=True)
+class StageProbabilities:
+    """Probabilidades 1X2 y goles esperados en una etapa del cálculo."""
+
+    label: str
+    home_win: float
+    draw: float
+    away_win: float
+    lambda_home: float
+    lambda_away: float
+
+
+@dataclass(frozen=True, slots=True)
+class ExplainedPrediction:
+    """Predicción final más el desglose por variable (etapas)."""
+
+    prediction: MatchPrediction
+    stages: list[StageProbabilities]
+
+
+@dataclass(frozen=True, slots=True)
 class PredictTodayMatches:
     """Orquesta la predicción de todos los partidos de hoy de una liga.
 
@@ -57,6 +77,34 @@ class PredictTodayMatches:
             lineup = await self.fixture_repo.get_lineup_availability(match.id)
             predictions.append(self.predictor.predict(enriched, lineup.players))
         return predictions
+
+    async def execute_explained(self, day: date | None = None) -> list[ExplainedPrediction]:
+        """Como `execute`, pero adjunta el desglose por etapas (Base → + Forma)."""
+        target = day or self.clock()
+        matches = await self.fixture_repo.get_fixtures_for_date(target, self.league.league_id)
+
+        out: list[ExplainedPrediction] = []
+        for match in matches:
+            base = self._enrich(match)
+            stages = [self._stage("Base (ratings)", base)]
+            formed = await self._apply_form(base, target)
+            if self.recent_results_repo is not None:
+                stages.append(self._stage("+ Forma reciente", formed))
+            lineup = await self.fixture_repo.get_lineup_availability(match.id)
+            prediction = self.predictor.predict(formed, lineup.players)
+            out.append(ExplainedPrediction(prediction=prediction, stages=stages))
+        return out
+
+    def _stage(self, label: str, match: Match) -> StageProbabilities:
+        p = self.predictor.predict(match).probabilities
+        return StageProbabilities(
+            label=label,
+            home_win=p.home_win,
+            draw=p.draw,
+            away_win=p.away_win,
+            lambda_home=p.lambda_home,
+            lambda_away=p.lambda_away,
+        )
 
     def _enrich(self, match: Match) -> Match:
         """Aplica los ratings entrenados a los equipos del partido (por nombre)."""
