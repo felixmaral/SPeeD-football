@@ -104,3 +104,33 @@ async def test_no_recent_repo_keeps_behaviour() -> None:
     a = await _use_case(ratings).execute(date(2026, 6, 15))
     b = await _use_case(ratings).execute(date(2026, 6, 15))
     assert a[0].probabilities.home_win == b[0].probabilities.home_win
+
+
+async def test_h2h_changes_prediction() -> None:
+    from datetime import date as _date
+
+    from wcpredictor.application.ports.recent_results_repo import TeamMatchResult
+    from wcpredictor.infrastructure.fixtures.recent_results import MockRecentResultsRepository
+
+    ratings = _RatingsStub(
+        {
+            "Spain": TeamRating(team="Spain", attack=1.2, defense=1.0),
+            "Cape Verde Islands": TeamRating(team="Cape Verde Islands", attack=1.0, defense=1.0),
+        }
+    )
+    # Spain domina el historial directo (goleadas recientes al rival).
+    h2h = {
+        ("Spain", "Cape Verde Islands"): [
+            TeamMatchResult(_date(2025, 9, 1), 4, 0, "Cape Verde Islands"),
+            TeamMatchResult(_date(2024, 9, 1), 3, 0, "Cape Verde Islands"),
+        ]
+    }
+    base = await _use_case(ratings).execute(_date(2026, 6, 15))
+    with_h2h = await PredictTodayMatches(
+        fixture_repo=MockFixtureRepository(),
+        ratings_repo=ratings,
+        league=WorldCupLeague(),
+        recent_results_repo=MockRecentResultsRepository(h2h=h2h),
+        clock=lambda: _date(2026, 6, 15),
+    ).execute(_date(2026, 6, 15))
+    assert with_h2h[0].probabilities.home_win > base[0].probabilities.home_win
