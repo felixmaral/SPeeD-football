@@ -3,4 +3,4 @@
 Arquitectura hexagonal: el dominio es puro y no depende de I/O ni frameworks.
 """
 
-__version__ = "0.1.0-beta.1"
+__version__ = "0.1.0-beta.2"
