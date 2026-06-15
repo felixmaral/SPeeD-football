@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "wcpredictor"
-version = "0.1.0b1"
+version = "0.1.0b2"
 description = "Sistema de predicción estadística de fútbol (Mundial → multi-liga) con arquitectura hexagonal"
 readme = "README.md"
 requires-python = ">=3.12"
