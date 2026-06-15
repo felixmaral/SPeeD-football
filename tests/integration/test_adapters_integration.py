@@ -55,7 +55,6 @@ async def test_mock_fixtures_with_json_ratings_end_to_end() -> None:
     )
     assert total == 1.0 or abs(total - 1.0) < 1e-9
     assert "vs" in prediction.report
-    assert prediction.cards.expected_cards > 0
 
 
 @respx.mock

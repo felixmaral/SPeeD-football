@@ -27,7 +27,7 @@
   {
     "team": "American Samoa",
     "attack": 0.314,
-    "defense": 7.557
+    "defense": 3.5
   },
   {
     "team": "Andorra",
@@ -41,8 +41,8 @@
   },
   {
     "team": "Anguilla",
-    "attack": 0.23,
-    "defense": 3.861
+    "attack": 0.3,
+    "defense": 3.5
   },
   {
     "team": "Antigua and Barbuda",
@@ -52,7 +52,7 @@
   {
     "team": "Argentina",
     "attack": 2.795,
-    "defense": 0.249
+    "defense": 0.3
   },
   {
     "team": "Armenia",
@@ -92,7 +92,7 @@
   {
     "team": "Bahamas",
     "attack": 0.395,
-    "defense": 3.903
+    "defense": 3.5
   },
   {
     "team": "Bahrain",
@@ -372,7 +372,7 @@
   {
     "team": "England",
     "attack": 2.568,
-    "defense": 0.297
+    "defense": 0.3
   },
   {
     "team": "Equatorial Guinea",
@@ -691,7 +691,7 @@
   },
   {
     "team": "Liechtenstein",
-    "attack": 0.27,
+    "attack": 0.3,
     "defense": 1.738
   },
   {
@@ -711,7 +711,7 @@
   },
   {
     "team": "Macau",
-    "attack": 0.245,
+    "attack": 0.3,
     "defense": 3.463
   },
   {
@@ -817,7 +817,7 @@
   {
     "team": "Morocco",
     "attack": 1.975,
-    "defense": 0.288
+    "defense": 0.3
   },
   {
     "team": "Mozambique",
@@ -887,7 +887,7 @@
   {
     "team": "Northern Mariana Islands",
     "attack": 0.48,
-    "defense": 3.821
+    "defense": 3.5
   },
   {
     "team": "Norway",
@@ -1237,7 +1237,7 @@
   {
     "team": "Tonga",
     "attack": 0.457,
-    "defense": 3.922
+    "defense": 3.5
   },
   {
     "team": "Trinidad and Tobago",
@@ -1262,12 +1262,12 @@
   {
     "team": "Turks and Caicos Islands",
     "attack": 0.347,
-    "defense": 3.897
+    "defense": 3.5
   },
   {
     "team": "Tuvalu",
     "attack": 0.69,
-    "defense": 3.837
+    "defense": 3.5
   },
   {
     "team": "Two Sicilies",
