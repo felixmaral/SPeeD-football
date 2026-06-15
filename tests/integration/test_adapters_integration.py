@@ -28,8 +28,8 @@ _DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "ratings"
 def _enrich(match: Match, ratings: RatingsRepository, namespace: str) -> Match:
     """Aplica los ratings del repositorio a los equipos del partido (si existen)."""
     home, away = match.home, match.away
-    rh = ratings.get_team_rating(namespace, home.id)
-    ra = ratings.get_team_rating(namespace, away.id)
+    rh = ratings.get_rating(namespace, home.name)
+    ra = ratings.get_rating(namespace, away.name)
     if rh is not None:
         home = replace(home, attack=rh.attack, defense=rh.defense)
     if ra is not None:

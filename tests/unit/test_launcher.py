@@ -56,10 +56,10 @@ async def test_run_handles_no_matches() -> None:
     from wcpredictor.infrastructure.leagues.world_cup import WorldCupLeague
 
     class _EmptyRatings(RatingsRepository):
-        def get_team_rating(self, namespace: str, team_id: int) -> TeamRating | None:
+        def get_rating(self, namespace: str, team_name: str) -> TeamRating | None:
             return None
 
-        def get_all(self, namespace: str) -> dict[int, TeamRating]:
+        def get_all(self, namespace: str) -> dict[str, TeamRating]:
             return {}
 
     uc = PredictTodayMatches(

@@ -1,10 +1,1392 @@
 [
-  {"team_id": 9, "attack": 1.62, "defense": 0.70},
-  {"team_id": 2, "attack": 1.55, "defense": 0.72},
-  {"team_id": 6, "attack": 1.48, "defense": 0.78},
-  {"team_id": 10, "attack": 1.45, "defense": 0.80},
-  {"team_id": 1118, "attack": 1.40, "defense": 0.85},
-  {"team_id": 25, "attack": 1.38, "defense": 0.82},
-  {"team_id": 26, "attack": 1.30, "defense": 0.88},
-  {"team_id": 7, "attack": 1.28, "defense": 0.90}
+  {
+    "team": "Abkhazia",
+    "attack": 1.07,
+    "defense": 0.942
+  },
+  {
+    "team": "Afghanistan",
+    "attack": 0.431,
+    "defense": 1.564
+  },
+  {
+    "team": "Albania",
+    "attack": 1.0,
+    "defense": 0.519
+  },
+  {
+    "team": "Alderney",
+    "attack": 0.964,
+    "defense": 1.541
+  },
+  {
+    "team": "Algeria",
+    "attack": 2.04,
+    "defense": 0.506
+  },
+  {
+    "team": "American Samoa",
+    "attack": 0.314,
+    "defense": 7.557
+  },
+  {
+    "team": "Andorra",
+    "attack": 0.42,
+    "defense": 1.051
+  },
+  {
+    "team": "Angola",
+    "attack": 1.039,
+    "defense": 0.601
+  },
+  {
+    "team": "Anguilla",
+    "attack": 0.23,
+    "defense": 3.861
+  },
+  {
+    "team": "Antigua and Barbuda",
+    "attack": 0.378,
+    "defense": 2.142
+  },
+  {
+    "team": "Argentina",
+    "attack": 2.795,
+    "defense": 0.249
+  },
+  {
+    "team": "Armenia",
+    "attack": 0.96,
+    "defense": 1.187
+  },
+  {
+    "team": "Artsakh",
+    "attack": 1.106,
+    "defense": 1.124
+  },
+  {
+    "team": "Aruba",
+    "attack": 0.66,
+    "defense": 2.076
+  },
+  {
+    "team": "Australia",
+    "attack": 1.98,
+    "defense": 0.379
+  },
+  {
+    "team": "Austria",
+    "attack": 1.899,
+    "defense": 0.502
+  },
+  {
+    "team": "Aymara",
+    "attack": 0.972,
+    "defense": 1.229
+  },
+  {
+    "team": "Azerbaijan",
+    "attack": 0.784,
+    "defense": 1.029
+  },
+  {
+    "team": "Bahamas",
+    "attack": 0.395,
+    "defense": 3.903
+  },
+  {
+    "team": "Bahrain",
+    "attack": 1.074,
+    "defense": 0.748
+  },
+  {
+    "team": "Bangladesh",
+    "attack": 0.472,
+    "defense": 1.764
+  },
+  {
+    "team": "Barawa",
+    "attack": 1.096,
+    "defense": 1.217
+  },
+  {
+    "team": "Barbados",
+    "attack": 0.626,
+    "defense": 2.375
+  },
+  {
+    "team": "Basque Country",
+    "attack": 1.471,
+    "defense": 0.788
+  },
+  {
+    "team": "Belarus",
+    "attack": 1.018,
+    "defense": 0.939
+  },
+  {
+    "team": "Belgium",
+    "attack": 2.37,
+    "defense": 0.444
+  },
+  {
+    "team": "Belize",
+    "attack": 0.559,
+    "defense": 1.758
+  },
+  {
+    "team": "Benin",
+    "attack": 1.115,
+    "defense": 0.822
+  },
+  {
+    "team": "Bermuda",
+    "attack": 0.913,
+    "defense": 2.076
+  },
+  {
+    "team": "Bhutan",
+    "attack": 0.325,
+    "defense": 2.901
+  },
+  {
+    "team": "Biafra",
+    "attack": 0.949,
+    "defense": 0.881
+  },
+  {
+    "team": "Bolivia",
+    "attack": 1.436,
+    "defense": 0.849
+  },
+  {
+    "team": "Bonaire",
+    "attack": 0.493,
+    "defense": 2.22
+  },
+  {
+    "team": "Bosnia and Herzegovina",
+    "attack": 1.185,
+    "defense": 0.725
+  },
+  {
+    "team": "Botswana",
+    "attack": 0.747,
+    "defense": 0.985
+  },
+  {
+    "team": "Brazil",
+    "attack": 2.729,
+    "defense": 0.353
+  },
+  {
+    "team": "British Virgin Islands",
+    "attack": 0.414,
+    "defense": 2.405
+  },
+  {
+    "team": "Brunei",
+    "attack": 0.352,
+    "defense": 3.226
+  },
+  {
+    "team": "Bulgaria",
+    "attack": 1.007,
+    "defense": 0.943
+  },
+  {
+    "team": "Burkina Faso",
+    "attack": 1.529,
+    "defense": 0.724
+  },
+  {
+    "team": "Burundi",
+    "attack": 0.832,
+    "defense": 0.993
+  },
+  {
+    "team": "Cambodia",
+    "attack": 0.618,
+    "defense": 2.079
+  },
+  {
+    "team": "Cameroon",
+    "attack": 1.366,
+    "defense": 0.525
+  },
+  {
+    "team": "Canada",
+    "attack": 1.892,
+    "defense": 0.49
+  },
+  {
+    "team": "Cape Verde",
+    "attack": 1.198,
+    "defense": 0.668
+  },
+  {
+    "team": "Cascadia",
+    "attack": 1.232,
+    "defense": 1.174
+  },
+  {
+    "team": "Catalonia",
+    "attack": 1.156,
+    "defense": 1.107
+  },
+  {
+    "team": "Cayman Islands",
+    "attack": 0.361,
+    "defense": 2.481
+  },
+  {
+    "team": "Central African Republic",
+    "attack": 1.022,
+    "defense": 1.325
+  },
+  {
+    "team": "Chad",
+    "attack": 0.578,
+    "defense": 1.31
+  },
+  {
+    "team": "Chagos Islands",
+    "attack": 1.146,
+    "defense": 1.769
+  },
+  {
+    "team": "Chameria",
+    "attack": 1.285,
+    "defense": 1.022
+  },
+  {
+    "team": "Chile",
+    "attack": 1.442,
+    "defense": 0.55
+  },
+  {
+    "team": "China",
+    "attack": 1.026,
+    "defense": 0.771
+  },
+  {
+    "team": "Colombia",
+    "attack": 2.539,
+    "defense": 0.391
+  },
+  {
+    "team": "Comoros",
+    "attack": 0.957,
+    "defense": 0.903
+  },
+  {
+    "team": "Congo",
+    "attack": 0.793,
+    "defense": 1.27
+  },
+  {
+    "team": "Cook Islands",
+    "attack": 0.358,
+    "defense": 3.178
+  },
+  {
+    "team": "Costa Rica",
+    "attack": 1.528,
+    "defense": 0.683
+  },
+  {
+    "team": "Croatia",
+    "attack": 2.106,
+    "defense": 0.455
+  },
+  {
+    "team": "Cuba",
+    "attack": 0.684,
+    "defense": 1.349
+  },
+  {
+    "team": "Curaçao",
+    "attack": 1.183,
+    "defense": 0.929
+  },
+  {
+    "team": "Cyprus",
+    "attack": 0.852,
+    "defense": 1.109
+  },
+  {
+    "team": "Czech Republic",
+    "attack": 1.709,
+    "defense": 0.634
+  },
+  {
+    "team": "DR Congo",
+    "attack": 1.28,
+    "defense": 0.457
+  },
+  {
+    "team": "Denmark",
+    "attack": 2.153,
+    "defense": 0.443
+  },
+  {
+    "team": "Djibouti",
+    "attack": 0.652,
+    "defense": 2.028
+  },
+  {
+    "team": "Dominica",
+    "attack": 0.469,
+    "defense": 1.984
+  },
+  {
+    "team": "Dominican Republic",
+    "attack": 1.061,
+    "defense": 1.07
+  },
+  {
+    "team": "East Turkestan",
+    "attack": 1.599,
+    "defense": 1.788
+  },
+  {
+    "team": "Ecuador",
+    "attack": 1.599,
+    "defense": 0.31
+  },
+  {
+    "team": "Egypt",
+    "attack": 1.444,
+    "defense": 0.441
+  },
+  {
+    "team": "El Salvador",
+    "attack": 0.697,
+    "defense": 0.785
+  },
+  {
+    "team": "Elba Island",
+    "attack": 1.449,
+    "defense": 1.036
+  },
+  {
+    "team": "England",
+    "attack": 2.568,
+    "defense": 0.297
+  },
+  {
+    "team": "Equatorial Guinea",
+    "attack": 0.893,
+    "defense": 0.883
+  },
+  {
+    "team": "Eritrea",
+    "attack": 1.0,
+    "defense": 1.257
+  },
+  {
+    "team": "Estonia",
+    "attack": 0.794,
+    "defense": 1.017
+  },
+  {
+    "team": "Eswatini",
+    "attack": 0.805,
+    "defense": 1.203
+  },
+  {
+    "team": "Ethiopia",
+    "attack": 0.877,
+    "defense": 1.003
+  },
+  {
+    "team": "Falkland Islands",
+    "attack": 0.896,
+    "defense": 1.554
+  },
+  {
+    "team": "Faroe Islands",
+    "attack": 0.765,
+    "defense": 0.854
+  },
+  {
+    "team": "Fiji",
+    "attack": 0.839,
+    "defense": 1.575
+  },
+  {
+    "team": "Finland",
+    "attack": 1.144,
+    "defense": 0.73
+  },
+  {
+    "team": "France",
+    "attack": 2.6,
+    "defense": 0.372
+  },
+  {
+    "team": "Franconia",
+    "attack": 1.202,
+    "defense": 1.144
+  },
+  {
+    "team": "French Guiana",
+    "attack": 0.801,
+    "defense": 1.239
+  },
+  {
+    "team": "Frøya",
+    "attack": 0.604,
+    "defense": 2.352
+  },
+  {
+    "team": "Gabon",
+    "attack": 1.299,
+    "defense": 0.979
+  },
+  {
+    "team": "Galicia",
+    "attack": 1.017,
+    "defense": 1.109
+  },
+  {
+    "team": "Gambia",
+    "attack": 1.431,
+    "defense": 1.01
+  },
+  {
+    "team": "Georgia",
+    "attack": 1.539,
+    "defense": 0.678
+  },
+  {
+    "team": "Germany",
+    "attack": 3.009,
+    "defense": 0.482
+  },
+  {
+    "team": "Ghana",
+    "attack": 1.36,
+    "defense": 0.663
+  },
+  {
+    "team": "Gibraltar",
+    "attack": 0.481,
+    "defense": 1.691
+  },
+  {
+    "team": "Gozo",
+    "attack": 0.838,
+    "defense": 0.745
+  },
+  {
+    "team": "Greece",
+    "attack": 1.668,
+    "defense": 0.499
+  },
+  {
+    "team": "Greenland",
+    "attack": 0.936,
+    "defense": 1.806
+  },
+  {
+    "team": "Grenada",
+    "attack": 0.641,
+    "defense": 1.732
+  },
+  {
+    "team": "Guadeloupe",
+    "attack": 0.975,
+    "defense": 1.073
+  },
+  {
+    "team": "Guam",
+    "attack": 0.443,
+    "defense": 3.084
+  },
+  {
+    "team": "Guatemala",
+    "attack": 1.231,
+    "defense": 0.854
+  },
+  {
+    "team": "Guernsey",
+    "attack": 1.193,
+    "defense": 0.67
+  },
+  {
+    "team": "Guinea",
+    "attack": 1.204,
+    "defense": 0.72
+  },
+  {
+    "team": "Guinea-Bissau",
+    "attack": 0.711,
+    "defense": 0.879
+  },
+  {
+    "team": "Guyana",
+    "attack": 0.974,
+    "defense": 1.442
+  },
+  {
+    "team": "Haiti",
+    "attack": 1.497,
+    "defense": 0.816
+  },
+  {
+    "team": "Hitra",
+    "attack": 1.527,
+    "defense": 1.555
+  },
+  {
+    "team": "Hmong",
+    "attack": 1.279,
+    "defense": 1.551
+  },
+  {
+    "team": "Honduras",
+    "attack": 1.089,
+    "defense": 0.745
+  },
+  {
+    "team": "Hong Kong",
+    "attack": 0.745,
+    "defense": 1.178
+  },
+  {
+    "team": "Hungary",
+    "attack": 1.469,
+    "defense": 0.599
+  },
+  {
+    "team": "Iceland",
+    "attack": 1.514,
+    "defense": 0.842
+  },
+  {
+    "team": "India",
+    "attack": 0.529,
+    "defense": 1.027
+  },
+  {
+    "team": "Indonesia",
+    "attack": 1.054,
+    "defense": 1.035
+  },
+  {
+    "team": "Iran",
+    "attack": 2.073,
+    "defense": 0.487
+  },
+  {
+    "team": "Iraq",
+    "attack": 1.281,
+    "defense": 0.55
+  },
+  {
+    "team": "Isle of Man",
+    "attack": 2.512,
+    "defense": 0.855
+  },
+  {
+    "team": "Isle of Wight",
+    "attack": 1.3,
+    "defense": 0.848
+  },
+  {
+    "team": "Israel",
+    "attack": 1.823,
+    "defense": 0.897
+  },
+  {
+    "team": "Italy",
+    "attack": 2.095,
+    "defense": 0.476
+  },
+  {
+    "team": "Ivory Coast",
+    "attack": 1.573,
+    "defense": 0.424
+  },
+  {
+    "team": "Jamaica",
+    "attack": 1.059,
+    "defense": 0.691
+  },
+  {
+    "team": "Japan",
+    "attack": 2.473,
+    "defense": 0.387
+  },
+  {
+    "team": "Jersey",
+    "attack": 2.032,
+    "defense": 0.699
+  },
+  {
+    "team": "Jordan",
+    "attack": 1.697,
+    "defense": 0.648
+  },
+  {
+    "team": "Kazakhstan",
+    "attack": 0.892,
+    "defense": 0.945
+  },
+  {
+    "team": "Kenya",
+    "attack": 0.966,
+    "defense": 0.986
+  },
+  {
+    "team": "Kernow",
+    "attack": 1.185,
+    "defense": 1.044
+  },
+  {
+    "team": "Kosovo",
+    "attack": 1.407,
+    "defense": 0.608
+  },
+  {
+    "team": "Kuwait",
+    "attack": 1.007,
+    "defense": 1.016
+  },
+  {
+    "team": "Kyrgyzstan",
+    "attack": 1.05,
+    "defense": 1.002
+  },
+  {
+    "team": "Laos",
+    "attack": 0.504,
+    "defense": 2.432
+  },
+  {
+    "team": "Latvia",
+    "attack": 0.725,
+    "defense": 0.996
+  },
+  {
+    "team": "Lebanon",
+    "attack": 0.782,
+    "defense": 0.778
+  },
+  {
+    "team": "Lesotho",
+    "attack": 0.724,
+    "defense": 0.989
+  },
+  {
+    "team": "Liberia",
+    "attack": 0.851,
+    "defense": 0.994
+  },
+  {
+    "team": "Libya",
+    "attack": 0.947,
+    "defense": 0.788
+  },
+  {
+    "team": "Liechtenstein",
+    "attack": 0.27,
+    "defense": 1.738
+  },
+  {
+    "team": "Lithuania",
+    "attack": 0.649,
+    "defense": 0.981
+  },
+  {
+    "team": "Luhansk PR",
+    "attack": 1.161,
+    "defense": 1.18
+  },
+  {
+    "team": "Luxembourg",
+    "attack": 0.74,
+    "defense": 0.848
+  },
+  {
+    "team": "Macau",
+    "attack": 0.245,
+    "defense": 3.463
+  },
+  {
+    "team": "Madagascar",
+    "attack": 1.139,
+    "defense": 1.01
+  },
+  {
+    "team": "Malawi",
+    "attack": 0.762,
+    "defense": 0.856
+  },
+  {
+    "team": "Malaysia",
+    "attack": 0.986,
+    "defense": 1.06
+  },
+  {
+    "team": "Maldives",
+    "attack": 0.433,
+    "defense": 2.167
+  },
+  {
+    "team": "Mali",
+    "attack": 1.296,
+    "defense": 0.413
+  },
+  {
+    "team": "Malta",
+    "attack": 0.673,
+    "defense": 1.113
+  },
+  {
+    "team": "Mapuche",
+    "attack": 1.137,
+    "defense": 1.053
+  },
+  {
+    "team": "Marshall Islands",
+    "attack": 0.529,
+    "defense": 3.428
+  },
+  {
+    "team": "Martinique",
+    "attack": 0.829,
+    "defense": 1.119
+  },
+  {
+    "team": "Matabeleland",
+    "attack": 0.957,
+    "defense": 0.954
+  },
+  {
+    "team": "Maule Sur",
+    "attack": 1.036,
+    "defense": 0.885
+  },
+  {
+    "team": "Mauritania",
+    "attack": 0.683,
+    "defense": 0.801
+  },
+  {
+    "team": "Mauritius",
+    "attack": 0.604,
+    "defense": 1.217
+  },
+  {
+    "team": "Mayotte",
+    "attack": 0.809,
+    "defense": 0.843
+  },
+  {
+    "team": "Menorca",
+    "attack": 1.033,
+    "defense": 1.179
+  },
+  {
+    "team": "Mexico",
+    "attack": 1.839,
+    "defense": 0.388
+  },
+  {
+    "team": "Moldova",
+    "attack": 0.733,
+    "defense": 1.284
+  },
+  {
+    "team": "Mongolia",
+    "attack": 0.304,
+    "defense": 2.061
+  },
+  {
+    "team": "Montenegro",
+    "attack": 0.97,
+    "defense": 0.891
+  },
+  {
+    "team": "Montserrat",
+    "attack": 0.603,
+    "defense": 1.81
+  },
+  {
+    "team": "Morocco",
+    "attack": 1.975,
+    "defense": 0.288
+  },
+  {
+    "team": "Mozambique",
+    "attack": 1.121,
+    "defense": 1.025
+  },
+  {
+    "team": "Myanmar",
+    "attack": 0.609,
+    "defense": 2.276
+  },
+  {
+    "team": "Namibia",
+    "attack": 0.809,
+    "defense": 0.918
+  },
+  {
+    "team": "Nepal",
+    "attack": 0.425,
+    "defense": 1.587
+  },
+  {
+    "team": "Netherlands",
+    "attack": 2.685,
+    "defense": 0.466
+  },
+  {
+    "team": "New Caledonia",
+    "attack": 1.037,
+    "defense": 1.055
+  },
+  {
+    "team": "New Zealand",
+    "attack": 1.844,
+    "defense": 0.588
+  },
+  {
+    "team": "Nicaragua",
+    "attack": 0.807,
+    "defense": 0.943
+  },
+  {
+    "team": "Niger",
+    "attack": 1.145,
+    "defense": 0.966
+  },
+  {
+    "team": "Nigeria",
+    "attack": 1.797,
+    "defense": 0.531
+  },
+  {
+    "team": "North Korea",
+    "attack": 1.128,
+    "defense": 0.956
+  },
+  {
+    "team": "North Macedonia",
+    "attack": 1.16,
+    "defense": 0.756
+  },
+  {
+    "team": "Northern Ireland",
+    "attack": 1.086,
+    "defense": 0.612
+  },
+  {
+    "team": "Northern Mariana Islands",
+    "attack": 0.48,
+    "defense": 3.821
+  },
+  {
+    "team": "Norway",
+    "attack": 2.495,
+    "defense": 0.497
+  },
+  {
+    "team": "Oman",
+    "attack": 1.024,
+    "defense": 0.639
+  },
+  {
+    "team": "Orkney",
+    "attack": 1.042,
+    "defense": 1.017
+  },
+  {
+    "team": "Padania",
+    "attack": 1.221,
+    "defense": 1.007
+  },
+  {
+    "team": "Pakistan",
+    "attack": 0.414,
+    "defense": 1.959
+  },
+  {
+    "team": "Palestine",
+    "attack": 1.041,
+    "defense": 0.731
+  },
+  {
+    "team": "Panama",
+    "attack": 1.596,
+    "defense": 0.68
+  },
+  {
+    "team": "Panjab",
+    "attack": 1.268,
+    "defense": 1.087
+  },
+  {
+    "team": "Papua New Guinea",
+    "attack": 0.715,
+    "defense": 1.512
+  },
+  {
+    "team": "Paraguay",
+    "attack": 1.487,
+    "defense": 0.481
+  },
+  {
+    "team": "Parishes of Jersey",
+    "attack": 1.365,
+    "defense": 1.112
+  },
+  {
+    "team": "Peru",
+    "attack": 1.124,
+    "defense": 0.486
+  },
+  {
+    "team": "Philippines",
+    "attack": 0.812,
+    "defense": 1.364
+  },
+  {
+    "team": "Poland",
+    "attack": 1.73,
+    "defense": 0.635
+  },
+  {
+    "team": "Portugal",
+    "attack": 2.785,
+    "defense": 0.399
+  },
+  {
+    "team": "Puerto Rico",
+    "attack": 0.825,
+    "defense": 1.31
+  },
+  {
+    "team": "Qatar",
+    "attack": 1.493,
+    "defense": 0.824
+  },
+  {
+    "team": "Raetia",
+    "attack": 1.623,
+    "defense": 1.226
+  },
+  {
+    "team": "Republic of Ireland",
+    "attack": 1.241,
+    "defense": 0.55
+  },
+  {
+    "team": "Romania",
+    "attack": 1.401,
+    "defense": 0.61
+  },
+  {
+    "team": "Russia",
+    "attack": 1.783,
+    "defense": 0.51
+  },
+  {
+    "team": "Rwanda",
+    "attack": 0.733,
+    "defense": 0.665
+  },
+  {
+    "team": "Réunion",
+    "attack": 0.887,
+    "defense": 0.86
+  },
+  {
+    "team": "Saint Barthélemy",
+    "attack": 1.208,
+    "defense": 1.256
+  },
+  {
+    "team": "Saint Helena",
+    "attack": 0.718,
+    "defense": 2.761
+  },
+  {
+    "team": "Saint Kitts and Nevis",
+    "attack": 0.611,
+    "defense": 2.097
+  },
+  {
+    "team": "Saint Lucia",
+    "attack": 0.575,
+    "defense": 2.037
+  },
+  {
+    "team": "Saint Martin",
+    "attack": 0.795,
+    "defense": 1.764
+  },
+  {
+    "team": "Saint Vincent and the Grenadines",
+    "attack": 0.809,
+    "defense": 1.911
+  },
+  {
+    "team": "Samoa",
+    "attack": 0.476,
+    "defense": 2.564
+  },
+  {
+    "team": "San Marino",
+    "attack": 0.355,
+    "defense": 2.209
+  },
+  {
+    "team": "Saudi Arabia",
+    "attack": 1.24,
+    "defense": 0.535
+  },
+  {
+    "team": "Scotland",
+    "attack": 1.651,
+    "defense": 0.539
+  },
+  {
+    "team": "Senegal",
+    "attack": 1.932,
+    "defense": 0.427
+  },
+  {
+    "team": "Serbia",
+    "attack": 1.626,
+    "defense": 0.574
+  },
+  {
+    "team": "Seychelles",
+    "attack": 0.346,
+    "defense": 2.849
+  },
+  {
+    "team": "Shetland",
+    "attack": 1.575,
+    "defense": 0.983
+  },
+  {
+    "team": "Sierra Leone",
+    "attack": 0.958,
+    "defense": 0.951
+  },
+  {
+    "team": "Singapore",
+    "attack": 0.736,
+    "defense": 1.615
+  },
+  {
+    "team": "Sint Maarten",
+    "attack": 0.699,
+    "defense": 2.327
+  },
+  {
+    "team": "Slovakia",
+    "attack": 1.33,
+    "defense": 0.644
+  },
+  {
+    "team": "Slovenia",
+    "attack": 1.186,
+    "defense": 0.497
+  },
+  {
+    "team": "Solomon Islands",
+    "attack": 0.816,
+    "defense": 1.786
+  },
+  {
+    "team": "Somalia",
+    "attack": 0.452,
+    "defense": 1.251
+  },
+  {
+    "team": "Somaliland",
+    "attack": 1.148,
+    "defense": 1.244
+  },
+  {
+    "team": "South Africa",
+    "attack": 1.268,
+    "defense": 0.627
+  },
+  {
+    "team": "South Korea",
+    "attack": 2.011,
+    "defense": 0.513
+  },
+  {
+    "team": "South Ossetia",
+    "attack": 1.151,
+    "defense": 0.992
+  },
+  {
+    "team": "South Sudan",
+    "attack": 0.577,
+    "defense": 1.246
+  },
+  {
+    "team": "Spain",
+    "attack": 3.178,
+    "defense": 0.327
+  },
+  {
+    "team": "Sri Lanka",
+    "attack": 0.395,
+    "defense": 1.609
+  },
+  {
+    "team": "Sudan",
+    "attack": 0.737,
+    "defense": 0.801
+  },
+  {
+    "team": "Suriname",
+    "attack": 1.05,
+    "defense": 0.772
+  },
+  {
+    "team": "Sweden",
+    "attack": 2.153,
+    "defense": 0.659
+  },
+  {
+    "team": "Switzerland",
+    "attack": 2.175,
+    "defense": 0.479
+  },
+  {
+    "team": "Syria",
+    "attack": 1.136,
+    "defense": 0.782
+  },
+  {
+    "team": "Székely Land",
+    "attack": 1.588,
+    "defense": 1.284
+  },
+  {
+    "team": "Sápmi",
+    "attack": 0.994,
+    "defense": 1.318
+  },
+  {
+    "team": "São Tomé and Príncipe",
+    "attack": 0.631,
+    "defense": 2.011
+  },
+  {
+    "team": "Tahiti",
+    "attack": 0.784,
+    "defense": 1.142
+  },
+  {
+    "team": "Taiwan",
+    "attack": 0.677,
+    "defense": 2.115
+  },
+  {
+    "team": "Tajikistan",
+    "attack": 0.894,
+    "defense": 0.822
+  },
+  {
+    "team": "Tamil Eelam",
+    "attack": 1.375,
+    "defense": 0.503
+  },
+  {
+    "team": "Tanzania",
+    "attack": 0.727,
+    "defense": 0.697
+  },
+  {
+    "team": "Thailand",
+    "attack": 1.164,
+    "defense": 0.878
+  },
+  {
+    "team": "Tibet",
+    "attack": 1.501,
+    "defense": 2.171
+  },
+  {
+    "team": "Ticino",
+    "attack": 0.973,
+    "defense": 2.194
+  },
+  {
+    "team": "Timor-Leste",
+    "attack": 0.395,
+    "defense": 2.956
+  },
+  {
+    "team": "Togo",
+    "attack": 0.914,
+    "defense": 0.81
+  },
+  {
+    "team": "Tonga",
+    "attack": 0.457,
+    "defense": 3.922
+  },
+  {
+    "team": "Trinidad and Tobago",
+    "attack": 0.997,
+    "defense": 1.122
+  },
+  {
+    "team": "Tunisia",
+    "attack": 1.398,
+    "defense": 0.538
+  },
+  {
+    "team": "Turkey",
+    "attack": 2.049,
+    "defense": 0.622
+  },
+  {
+    "team": "Turkmenistan",
+    "attack": 0.865,
+    "defense": 1.196
+  },
+  {
+    "team": "Turks and Caicos Islands",
+    "attack": 0.347,
+    "defense": 3.897
+  },
+  {
+    "team": "Tuvalu",
+    "attack": 0.69,
+    "defense": 3.837
+  },
+  {
+    "team": "Two Sicilies",
+    "attack": 0.903,
+    "defense": 1.913
+  },
+  {
+    "team": "Uganda",
+    "attack": 1.011,
+    "defense": 0.813
+  },
+  {
+    "team": "Ukraine",
+    "attack": 1.78,
+    "defense": 0.637
+  },
+  {
+    "team": "United Arab Emirates",
+    "attack": 1.427,
+    "defense": 0.649
+  },
+  {
+    "team": "United States",
+    "attack": 2.019,
+    "defense": 0.517
+  },
+  {
+    "team": "United States Virgin Islands",
+    "attack": 0.366,
+    "defense": 2.9
+  },
+  {
+    "team": "Uruguay",
+    "attack": 1.861,
+    "defense": 0.328
+  },
+  {
+    "team": "Uzbekistan",
+    "attack": 1.486,
+    "defense": 0.449
+  },
+  {
+    "team": "Vanuatu",
+    "attack": 0.774,
+    "defense": 1.746
+  },
+  {
+    "team": "Vatican City",
+    "attack": 1.164,
+    "defense": 1.236
+  },
+  {
+    "team": "Venezuela",
+    "attack": 1.733,
+    "defense": 0.594
+  },
+  {
+    "team": "Vietnam",
+    "attack": 1.033,
+    "defense": 0.892
+  },
+  {
+    "team": "Wales",
+    "attack": 1.436,
+    "defense": 0.604
+  },
+  {
+    "team": "West Papua",
+    "attack": 1.087,
+    "defense": 1.231
+  },
+  {
+    "team": "Western Armenia",
+    "attack": 1.157,
+    "defense": 1.015
+  },
+  {
+    "team": "Western Isles",
+    "attack": 1.053,
+    "defense": 1.09
+  },
+  {
+    "team": "Yemen",
+    "attack": 1.009,
+    "defense": 1.401
+  },
+  {
+    "team": "Ynys Môn",
+    "attack": 1.484,
+    "defense": 0.587
+  },
+  {
+    "team": "Yorkshire",
+    "attack": 1.196,
+    "defense": 1.074
+  },
+  {
+    "team": "Yoruba Nation",
+    "attack": 0.982,
+    "defense": 1.062
+  },
+  {
+    "team": "Zambia",
+    "attack": 1.153,
+    "defense": 0.863
+  },
+  {
+    "team": "Zanzibar",
+    "attack": 0.931,
+    "defense": 0.676
+  },
+  {
+    "team": "Zimbabwe",
+    "attack": 0.901,
+    "defense": 0.821
+  },
+  {
+    "team": "Åland Islands",
+    "attack": 0.783,
+    "defense": 1.404
+  }
 ]

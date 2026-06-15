@@ -37,5 +37,5 @@ def test_lineup_info_available_players() -> None:
 
 
 def test_team_rating_value_object() -> None:
-    r = TeamRating(team_id=10, attack=1.4, defense=0.8)
-    assert (r.team_id, r.attack, r.defense) == (10, 1.4, 0.8)
+    r = TeamRating(team="Spain", attack=1.4, defense=0.8)
+    assert (r.team, r.attack, r.defense) == ("Spain", 1.4, 0.8)
