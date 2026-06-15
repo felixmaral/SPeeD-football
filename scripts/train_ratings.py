@@ -37,6 +37,10 @@ _URL = "https://raw.githubusercontent.com/martj42/international_results/master/r
 _RIDGE = 0.5
 _DEFAULT_SINCE = "2019-01-01"
 _DEFAULT_HALF_LIFE_DAYS = 900.0
+# Compresión del spread (shrinkage) y recorte de rango para fuerzas realistas:
+# evita λ absurdas (8-0) y valores extremos en equipos con pocos datos.
+_DEFAULT_SHRINK = 1.0
+_CLIP_MIN, _CLIP_MAX = 0.30, 3.50
 
 # Peso por importancia del partido (según la columna `tournament`). Subcadena en minúsculas.
 _IMPORTANCE = {
@@ -93,7 +97,9 @@ def _download_games(since: date) -> list[Game]:
     return games
 
 
-def _fit(games: list[Game], half_life_days: float) -> dict[str, tuple[float, float]]:
+def _fit(
+    games: list[Game], half_life_days: float, shrink: float = _DEFAULT_SHRINK
+) -> dict[str, tuple[float, float]]:
     teams = sorted({t for g in games for t in (g[0], g[1])})
     idx = {t: i for i, t in enumerate(teams)}
     n = len(teams)
@@ -125,13 +131,16 @@ def _fit(games: list[Game], half_life_days: float) -> dict[str, tuple[float, flo
 
     x0 = np.concatenate([np.zeros(n), np.zeros(n), [0.25]])
     res = minimize(neg_log_lik, x0, method="L-BFGS-B")
-    atk = res.x[:n] - res.x[:n].mean()
-    dfn = res.x[n : 2 * n] - res.x[n : 2 * n].mean()
+    # Centrar y comprimir el spread (shrinkage hacia la media) para escala realista.
+    atk = (res.x[:n] - res.x[:n].mean()) * shrink
+    dfn = (res.x[n : 2 * n] - res.x[n : 2 * n].mean()) * shrink
 
     ratings: dict[str, tuple[float, float]] = {}
     for t in teams:
         i = idx[t]
-        ratings[t] = (round(float(np.exp(atk[i])), 3), round(float(np.exp(-dfn[i])), 3))
+        attack = float(np.clip(np.exp(atk[i]), _CLIP_MIN, _CLIP_MAX))
+        defense = float(np.clip(np.exp(-dfn[i]), _CLIP_MIN, _CLIP_MAX))
+        ratings[t] = (round(attack, 3), round(defense, 3))
     return ratings
 
 
@@ -140,10 +149,11 @@ def main() -> None:
     parser.add_argument("--out", default="data/ratings/world_cup.json")
     parser.add_argument("--since", default=_DEFAULT_SINCE)
     parser.add_argument("--half-life-days", type=float, default=_DEFAULT_HALF_LIFE_DAYS)
+    parser.add_argument("--shrink", type=float, default=_DEFAULT_SHRINK)
     args = parser.parse_args()
 
     games = _download_games(date.fromisoformat(args.since))
-    ratings = _fit(games, args.half_life_days)
+    ratings = _fit(games, args.half_life_days, args.shrink)
     payload = [
         {"team": team, "attack": atk, "defense": dfn}
         for team, (atk, dfn) in sorted(ratings.items())

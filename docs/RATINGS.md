@@ -27,12 +27,20 @@ Resultados internacionales  ──►  scripts/train_ratings.py  ──►  data
 - **Campo neutral:** la ventaja de local solo se aplica si el partido no es neutral.
 - **Modelo:** Poisson bivariante por MLE ponderado; `lam = exp(log(media) + ventaja·noNeutral +
   atk_i − def_j)`, identificabilidad `mean(attack)=0` y **regularización L2** (shrinkage).
-- **Conversión:** `attack = exp(atk)`, `defense = exp(−def)` (centrados) → escala
-  multiplicativa del dominio.
-- **Identidad:** por **nombre** de equipo (robusto entre fuentes con ids distintos).
+- **Conversión:** `attack = exp(atk·shrink)`, `defense = exp(−def·shrink)` (centrados),
+  con un **recorte** holgado `[0.30, 3.50]` que solo corta valores patológicos de
+  selecciones con muy pocos partidos. `shrink=1.0` por defecto (sin compresión).
+- **Identidad:** por **nombre** de equipo con tabla de **alias** entre fuentes
+  (p.ej. "Cape Verde Islands"→"Cape Verde", "Korea Republic"→"South Korea").
 
-Ejemplos del v0 (con ventaja de local): España–Cabo Verde 93%, España–Brasil 56/22/22,
-Francia–Argentina 31/28/41, Marruecos–Portugal 45/28/28.
+### Alcance del v0 (salida)
+La salida se centra en **resultado (1X2), goles esperados (una sola cifra, las λ),
+marcador más probable y over/under**. Las probabilidades nunca se muestran como `0.0%`
+(se usa `<0.1%`). Posesión, xG separado y tarjetas quedan **fuera del v0** (sus modelos
+permanecen en el código para versiones futuras).
+
+Ejemplos del v0 (con ventaja de local): España–Cabo Verde 93%/6%/2% (3.87-0.53),
+España–Brasil 56/22/22, Francia–Argentina 37/26/36, Canadá–Cabo Verde 71% (Canadá favorita).
 
 Ajustar:
 
