@@ -1,4 +1,9 @@
-"""Servicio Predictor: orquesta los modelos del dominio para predecir un partido."""
+"""Servicio Predictor: orquesta el modelo de resultado para predecir un partido.
+
+v0: predice resultado/marcador con Dixon-Coles tras ajustar la fuerza por la
+disponibilidad de jugadores. Tarjetas y rendimiento quedan fuera del v0 (sus
+modelos siguen en el código para futuras versiones).
+"""
 
 from __future__ import annotations
 
@@ -8,26 +13,22 @@ from dataclasses import dataclass, field
 
 from wcpredictor.domain.entities.match import Match
 from wcpredictor.domain.entities.player import Player
-from wcpredictor.domain.models.cards import CardsModel, CardsPrediction
 from wcpredictor.domain.models.dixon_coles import DixonColesModel, MatchProbabilities
-from wcpredictor.domain.models.performance import MatchPerformance, PerformanceModel
 from wcpredictor.domain.services.availability import AvailabilityAdjuster
 from wcpredictor.domain.services.explainer import Explainer
 
 
 @dataclass(frozen=True, slots=True)
 class MatchPrediction:
-    """Predicción completa y explicada de un partido.
+    """Predicción explicada de un partido (v0: resultado/marcador).
 
     `version` es un identificador estable derivado del partido y de la alineación
-    usada: con la misma disponibilidad produce la misma versión (idempotencia para
-    el refresco por alineaciones). `confirmed` distingue preliminar de confirmada.
+    usada (idempotencia para el refresco por alineaciones). `confirmed` distingue
+    preliminar de confirmada.
     """
 
     match_id: int
     probabilities: MatchProbabilities
-    cards: CardsPrediction
-    performance: MatchPerformance
     report: str
     confirmed: bool
     version: str
@@ -35,36 +36,23 @@ class MatchPrediction:
 
 @dataclass(frozen=True, slots=True)
 class Predictor:
-    """Orquesta el ajuste por disponibilidad y los modelos estadísticos."""
+    """Orquesta el ajuste por disponibilidad y el modelo de resultado."""
 
     dixon_coles: DixonColesModel = field(default_factory=DixonColesModel)
-    cards_model: CardsModel = field(default_factory=CardsModel)
-    performance_model: PerformanceModel = field(default_factory=PerformanceModel)
     availability: AvailabilityAdjuster = field(default_factory=AvailabilityAdjuster)
     explainer: Explainer = field(default_factory=Explainer)
 
-    def predict(
-        self,
-        match: Match,
-        players: Sequence[Player] = (),
-        aggression: float = 1.0,
-    ) -> MatchPrediction:
+    def predict(self, match: Match, players: Sequence[Player] = ()) -> MatchPrediction:
         """Predice el partido, ajustando por las bajas presentes en `players`."""
         home = self.availability.adjust(match.home, players)
         away = self.availability.adjust(match.away, players)
 
         probabilities = self.dixon_coles.predict(home, away)
-        cards = self.cards_model.predict(
-            referee=match.referee, aggression=aggression, players=players
-        )
-        performance = self.performance_model.predict(home, away)
-        report = self.explainer.explain(match, probabilities, cards, performance)
+        report = self.explainer.explain(match, probabilities)
 
         return MatchPrediction(
             match_id=match.id,
             probabilities=probabilities,
-            cards=cards,
-            performance=performance,
             report=report,
             confirmed=match.has_confirmed_lineup,
             version=self._version(match, players),

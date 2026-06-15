@@ -23,12 +23,11 @@ def _match(status: MatchStatus = MatchStatus.SCHEDULED) -> Match:
     )
 
 
-def test_predict_produces_full_prediction() -> None:
+def test_predict_produces_prediction() -> None:
     pred = Predictor().predict(_match())
     assert pred.match_id == 7
     total = pred.probabilities.home_win + pred.probabilities.draw + pred.probabilities.away_win
     assert total == pytest.approx(1.0, abs=1e-9)
-    assert pred.cards.expected_cards > 0
     assert "Spain" in pred.report
 
 

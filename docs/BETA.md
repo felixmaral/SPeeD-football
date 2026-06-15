@@ -57,24 +57,22 @@ wcpredictor --date 2026-06-15
 
 ```
 Spain vs Cape Verde Islands
-Pronóstico: Spain (51.8%)
+Pronóstico: Spain (93.0%)
 
 Resultado (1X2):
-  Spain: 51.8%
-  Empate: 21.9%
-  Cape Verde Islands: 26.3%
-Goles esperados: 2.10 - 1.46
-Marcador más probable: 1-1
-Over 2.5 goles: 69.1%
-
-Tarjetas:
-  Esperadas: 4.4
-  Over 4.5: 44.9%
-
-Rendimiento:
-  Posesión: 55% - 45%
-  xG: 1.87 - 1.46
+  Spain: 93.0%
+  Empate: 5.6%
+  Cape Verde Islands: 1.5%
+Goles esperados: 3.87 - 0.53
+Marcador más probable: 3-0
+Over 2.5 goles: 84.0%
 ```
+
+Además, el informe imprime una **matriz de marcadores** (0-6) con la probabilidad de cada
+resultado exacto (local en horizontal, visitante en vertical).
+
+> v0 se centra en resultado/marcador. Posesión, xG separado y tarjetas llegarán en
+> versiones posteriores (ver [docs/RATINGS.md](RATINGS.md)).
 
 ## 5. Limitaciones conocidas (beta)
 

@@ -16,8 +16,8 @@ def test_launcher_runs_in_mock_mode(
     assert "Spain vs Cape Verde Islands" in out
     assert "Pronóstico:" in out
     assert "Resultado (1X2):" in out
-    assert "Tarjetas:" in out
-    assert "Rendimiento:" in out
+    assert "Goles esperados:" in out
+    assert "Over 2.5" in out
 
 
 def test_launcher_default_date(

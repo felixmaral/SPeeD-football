@@ -15,23 +15,24 @@ from wcpredictor.domain.entities.referee import Referee
 from wcpredictor.domain.entities.team import Team
 from wcpredictor.infrastructure.leagues.world_cup import WORLD_CUP_LEAGUE_ID
 
-# (home_name, home_atk, home_def, away_name, away_atk, away_def, hour)
+# (home_name, away_name, hour). Los equipos se crean con fuerza neutra (1.0/1.0);
+# los ratings reales los aplica el caso de uso por nombre. Así no se mezclan escalas.
 _SAMPLE = [
-    ("Spain", 1.6, 0.7, "Cape Verde Islands", 0.7, 1.4, 16),
-    ("Belgium", 1.4, 0.9, "Egypt", 0.9, 1.1, 19),
-    ("Saudi Arabia", 0.8, 1.2, "Uruguay", 1.5, 0.8, 22),
+    ("Spain", "Cape Verde Islands", 16),
+    ("Belgium", "Egypt", 19),
+    ("Saudi Arabia", "Uruguay", 22),
 ]
 
 
 def default_world_cup_fixtures(day: date) -> list[Match]:
     """Genera los partidos de muestra del Mundial para `day`."""
     matches: list[Match] = []
-    for i, (h, ha, hd, a, aa, ad, hour) in enumerate(_SAMPLE, start=1):
+    for i, (h, a, hour) in enumerate(_SAMPLE, start=1):
         matches.append(
             Match(
                 id=i,
-                home=Team(id=i * 2 - 1, name=h, attack=ha, defense=hd),
-                away=Team(id=i * 2, name=a, attack=aa, defense=ad),
+                home=Team(id=i * 2 - 1, name=h),
+                away=Team(id=i * 2, name=a),
                 kickoff=datetime.combine(day, time(hour, 0), tzinfo=UTC),
                 league_id=WORLD_CUP_LEAGUE_ID,
                 referee=Referee(id=100 + i, name=f"Referee {i}", strictness=1.0 + 0.1 * i),
