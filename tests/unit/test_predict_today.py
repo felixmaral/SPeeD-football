@@ -80,9 +80,9 @@ async def test_recent_form_changes_prediction() -> None:
             "Cape Verde Islands": TeamRating(team="Cape Verde Islands", attack=0.9, defense=1.2),
         }
     )
-    # Spain (mock home id=1) llega con una gran racha reciente vs rival medio.
+    # Spain (mock) llega con una gran racha reciente vs rival medio.
     recent = {
-        1: [
+        "Spain": [
             TeamMatchResult(date(2026, 6, 12), 4, 0, "Rival"),
             TeamMatchResult(date(2026, 6, 8), 3, 0, "Rival"),
             TeamMatchResult(date(2026, 6, 4), 3, 1, "Rival"),
@@ -94,7 +94,6 @@ async def test_recent_form_changes_prediction() -> None:
         ratings_repo=ratings,
         league=WorldCupLeague(),
         recent_results_repo=MockRecentResultsRepository(recent=recent),
-        season=2026,
         clock=lambda: date(2026, 6, 15),
     ).execute(date(2026, 6, 15))
     assert with_form[0].probabilities.home_win > base[0].probabilities.home_win

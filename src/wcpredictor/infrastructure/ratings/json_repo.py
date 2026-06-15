@@ -16,26 +16,7 @@ import json
 from pathlib import Path
 
 from wcpredictor.application.ports.ratings_repo import RatingsRepository, TeamRating
-
-# Equivalencias de nombre entre la fuente de fixtures (API-Football) y la de
-# entrenamiento (resultados internacionales). Clave y valor en minúsculas.
-_ALIASES = {
-    "cape verde islands": "cape verde",
-    "korea republic": "south korea",
-    "korea dpr": "north korea",
-    "ir iran": "iran",
-    "usa": "united states",
-    "czechia": "czech republic",
-    "côte d'ivoire": "ivory coast",
-    "cote d'ivoire": "ivory coast",
-    "china pr": "china",
-    "turkey": "türkiye",
-}
-
-
-def _normalize(name: str) -> str:
-    key = name.strip().lower()
-    return _ALIASES.get(key, key)
+from wcpredictor.infrastructure.names import normalize_team_name as _normalize
 
 
 class JsonRatingsRepository(RatingsRepository):

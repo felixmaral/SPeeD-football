@@ -1,14 +1,15 @@
 """Adaptadores de resultados recientes / head-to-head.
 
-`ApiFootballRecentResultsRepository` consulta API-Football; `MockRecentResultsRepository`
-sirve datos en memoria para desarrollo/CI.
+`Martj42RecentResultsRepository` usa el dataset abierto de resultados internacionales
+(gratis, sin key, actualizado a diario), identificando equipos por nombre.
+`MockRecentResultsRepository` sirve datos en memoria para desarrollo/CI.
 """
 
 from __future__ import annotations
 
-import asyncio
+import csv
+import io
 from datetime import date
-from typing import Any
 
 import httpx
 
@@ -16,118 +17,104 @@ from wcpredictor.application.ports.recent_results_repo import (
     RecentResultsRepository,
     TeamMatchResult,
 )
+from wcpredictor.infrastructure.names import normalize_team_name
 
-_FINISHED = frozenset({"FT", "AET", "PEN"})
-
-
-def _to_result(item: dict[str, Any], team_id: int) -> TeamMatchResult | None:
-    """Mapea un fixture a la perspectiva de `team_id`; None si no está finalizado."""
-    fx = item["fixture"]
-    if fx["status"]["short"] not in _FINISHED:
-        return None
-    teams, goals = item["teams"], item["goals"]
-    is_home = teams["home"]["id"] == team_id
-    if is_home:
-        gf, ga, opponent = goals["home"], goals["away"], teams["away"]["name"]
-    else:
-        gf, ga, opponent = goals["away"], goals["home"], teams["home"]["name"]
-    if gf is None or ga is None:
-        return None
-    return TeamMatchResult(
-        when=date.fromisoformat(fx["date"][:10]),
-        goals_for=int(gf),
-        goals_against=int(ga),
-        opponent_name=opponent,
-    )
+_URL = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
 
 
 def _sorted_desc(results: list[TeamMatchResult]) -> list[TeamMatchResult]:
     return sorted(results, key=lambda r: r.when, reverse=True)
 
 
-class ApiFootballRecentResultsRepository(RecentResultsRepository):
-    """Resultados recientes y H2H desde API-Football."""
+class Martj42RecentResultsRepository(RecentResultsRepository):
+    """Resultados recientes y H2H desde el dataset martj42 (por nombre)."""
 
     def __init__(
         self,
-        api_key: str,
-        base_url: str = "https://v3.football.api-sports.io",
+        url: str = _URL,
         *,
-        timeout: float = 30.0,
-        max_retries: int = 3,
-        backoff_base: float = 0.5,
+        timeout: float = 120.0,
         verify: bool | str = True,
+        csv_text: str | None = None,
     ) -> None:
-        self._base_url = base_url.rstrip("/")
-        self._headers = {"x-apisports-key": api_key}
+        self._url = url
         self._timeout = timeout
-        self._max_retries = max_retries
-        self._backoff_base = backoff_base
         self._verify = verify
+        self._rows: list[dict[str, str]] | None = None
+        if csv_text is not None:
+            self._rows = self._parse(csv_text)
 
-    async def get_recent_results(
-        self, team_id: int, season: int, league_id: int | None = None
+    async def get_recent_results(self, team_name: str, limit: int = 10) -> list[TeamMatchResult]:
+        key = normalize_team_name(team_name)
+        rows = await self._load()
+        out = [
+            r
+            for row in rows
+            if key in (normalize_team_name(row["home_team"]), normalize_team_name(row["away_team"]))
+            and (r := _row_to_result(row, key)) is not None
+        ]
+        return _sorted_desc(out)[:limit]
+
+    async def get_head_to_head(
+        self, home_name: str, away_name: str, limit: int = 5
     ) -> list[TeamMatchResult]:
-        params: dict[str, Any] = {"team": team_id, "season": season}
-        if league_id is not None:
-            params["league"] = league_id
-        data = await self._get("/fixtures", params)
-        results = [r for item in data.get("response", []) if (r := _to_result(item, team_id))]
-        return _sorted_desc(results)
+        home_key, away_key = normalize_team_name(home_name), normalize_team_name(away_name)
+        rows = await self._load()
+        out = [
+            r
+            for row in rows
+            if {normalize_team_name(row["home_team"]), normalize_team_name(row["away_team"])}
+            == {home_key, away_key}
+            and (r := _row_to_result(row, home_key)) is not None
+        ]
+        return _sorted_desc(out)[:limit]
 
-    async def get_head_to_head(self, home_id: int, away_id: int) -> list[TeamMatchResult]:
-        data = await self._get("/fixtures/headtohead", {"h2h": f"{home_id}-{away_id}"})
-        results = [r for item in data.get("response", []) if (r := _to_result(item, home_id))]
-        return _sorted_desc(results)
+    async def _load(self) -> list[dict[str, str]]:
+        if self._rows is None:
+            async with httpx.AsyncClient(timeout=self._timeout, verify=self._verify) as client:
+                resp = await client.get(self._url)
+            resp.raise_for_status()
+            self._rows = self._parse(resp.text)
+        return self._rows
 
-    async def _get(self, path: str, params: dict[str, Any]) -> dict[str, Any]:
-        last_exc: Exception | None = None
-        for attempt in range(self._max_retries):
-            try:
-                return await self._request(path, params)
-            except (httpx.HTTPError, _RetryableStatusError) as exc:
-                last_exc = exc
-                if attempt == self._max_retries - 1:
-                    break
-                await asyncio.sleep(self._backoff_base * (2**attempt))
-        assert last_exc is not None
-        raise last_exc
+    @staticmethod
+    def _parse(text: str) -> list[dict[str, str]]:
+        return list(csv.DictReader(io.StringIO(text)))
 
-    async def _request(self, path: str, params: dict[str, Any]) -> dict[str, Any]:
-        async with httpx.AsyncClient(timeout=self._timeout, verify=self._verify) as client:
-            response = await client.get(
-                f"{self._base_url}{path}", params=params, headers=self._headers
-            )
-        if response.status_code == 429 or response.status_code >= 500:
-            raise _RetryableStatusError(response.status_code)
-        response.raise_for_status()
-        result: dict[str, Any] = response.json()
-        return result
+
+def _row_to_result(row: dict[str, str], team_key: str) -> TeamMatchResult | None:
+    """Mapea una fila del CSV a la perspectiva del equipo `team_key`."""
+    hs, as_ = row["home_score"], row["away_score"]
+    if not hs.isdigit() or not as_.isdigit():
+        return None
+    is_home = normalize_team_name(row["home_team"]) == team_key
+    if is_home:
+        gf, ga, opponent = int(hs), int(as_), row["away_team"]
+    else:
+        gf, ga, opponent = int(as_), int(hs), row["home_team"]
+    return TeamMatchResult(
+        when=date.fromisoformat(row["date"]),
+        goals_for=gf,
+        goals_against=ga,
+        opponent_name=opponent,
+    )
 
 
 class MockRecentResultsRepository(RecentResultsRepository):
-    """Resultados recientes / H2H en memoria."""
+    """Resultados recientes / H2H en memoria (por nombre)."""
 
     def __init__(
         self,
-        recent: dict[int, list[TeamMatchResult]] | None = None,
-        h2h: dict[tuple[int, int], list[TeamMatchResult]] | None = None,
+        recent: dict[str, list[TeamMatchResult]] | None = None,
+        h2h: dict[tuple[str, str], list[TeamMatchResult]] | None = None,
     ) -> None:
         self._recent = recent or {}
         self._h2h = h2h or {}
 
-    async def get_recent_results(
-        self, team_id: int, season: int, league_id: int | None = None
+    async def get_recent_results(self, team_name: str, limit: int = 10) -> list[TeamMatchResult]:
+        return _sorted_desc(list(self._recent.get(team_name, [])))[:limit]
+
+    async def get_head_to_head(
+        self, home_name: str, away_name: str, limit: int = 5
     ) -> list[TeamMatchResult]:
-        return _sorted_desc(list(self._recent.get(team_id, [])))
-
-    async def get_head_to_head(self, home_id: int, away_id: int) -> list[TeamMatchResult]:
-        return _sorted_desc(list(self._h2h.get((home_id, away_id), [])))
-
-
-class _RetryableStatusError(Exception):
-    """Estado HTTP transitorio que justifica un reintento."""
-
-    def __init__(self, status_code: int) -> None:
-        super().__init__(f"estado transitorio: {status_code}")
-        self.status_code = status_code
+        return _sorted_desc(list(self._h2h.get((home_name, away_name), [])))[:limit]

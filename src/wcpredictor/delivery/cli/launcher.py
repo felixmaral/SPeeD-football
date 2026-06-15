@@ -17,6 +17,7 @@ from wcpredictor.application.use_cases.predict_today import PredictTodayMatches
 from wcpredictor.config.settings import Settings
 from wcpredictor.infrastructure.fixtures.api_football import ApiFootballFixtureRepository
 from wcpredictor.infrastructure.fixtures.mock import MockFixtureRepository
+from wcpredictor.infrastructure.fixtures.recent_results import Martj42RecentResultsRepository
 from wcpredictor.infrastructure.leagues.world_cup import WorldCupLeague
 from wcpredictor.infrastructure.notifiers.console import ConsoleNotifier
 from wcpredictor.infrastructure.ratings.json_repo import JsonRatingsRepository
@@ -38,10 +39,13 @@ def build_use_case(
     settings: Settings, ratings_dir: Path = _DEFAULT_RATINGS_DIR
 ) -> PredictTodayMatches:
     """Construye el caso de uso con sus dependencias (raíz de composición)."""
+    # La forma reciente (martj42) es gratuita y sin red solo en modo real; en mock se omite.
+    recent_repo = None if settings.effective_use_mock else Martj42RecentResultsRepository()
     return PredictTodayMatches(
         fixture_repo=build_fixture_repository(settings),
         ratings_repo=JsonRatingsRepository(ratings_dir),
         league=WorldCupLeague(),
+        recent_results_repo=recent_repo,
     )
 
 
