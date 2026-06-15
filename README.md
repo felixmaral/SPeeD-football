@@ -16,6 +16,24 @@ sustituibles.
 | v1.1 | Refresco por alineaciones (T−60/−30) | ⏳ |
 | v2.0 | Multi-liga (LaLiga +) | ⏳ |
 
+## Arquitectura
+
+Arquitectura **hexagonal (puertos y adaptadores)**. Las dependencias apuntan hacia el dominio:
+
+```
+delivery ─▶ application ─▶ domain ◀─ infrastructure
+                 │                        ▲
+                 └────── puertos (ABC) ───┘
+```
+
+- **domain** — núcleo puro (entidades, modelos estadísticos, servicios). Sin I/O ni frameworks.
+- **application** — casos de uso + puertos (interfaces ABC).
+- **infrastructure** — adaptadores *driven* (API-Football, mocks, repos, ligas, scheduler).
+- **delivery** — adaptadores *driving* (CLI, bot, futura API).
+
+Detalle y justificación en [ADR-001](docs/adr/0001-hexagonal-architecture.md)
+(índice en [docs/adr/](docs/adr/README.md)).
+
 ## Estructura
 
 ```
