@@ -45,11 +45,14 @@ class PredictTodayMatches:
         return predictions
 
     def _enrich(self, match: Match) -> Match:
-        """Aplica los ratings entrenados a los equipos del partido."""
+        """Aplica los ratings entrenados a los equipos del partido (por nombre).
+
+        Si un equipo no tiene rating entrenado, conserva su fuerza actual.
+        """
         namespace = self.league.ratings_namespace()
         home, away = match.home, match.away
-        rh = self.ratings_repo.get_team_rating(namespace, home.id)
-        ra = self.ratings_repo.get_team_rating(namespace, away.id)
+        rh = self.ratings_repo.get_rating(namespace, home.name)
+        ra = self.ratings_repo.get_rating(namespace, away.name)
         if rh is not None:
             home = replace(home, attack=rh.attack, defense=rh.defense)
         if ra is not None:

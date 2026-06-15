@@ -55,7 +55,8 @@ WCPREDICTOR_USE_MOCK=true python -m wcpredictor.delivery.cli.launcher --date 202
 wcpredictor                      # partidos de hoy
 ```
 
-Guía completa en [docs/BETA.md](docs/BETA.md).
+Guía completa en [docs/BETA.md](docs/BETA.md). Entrenamiento de ratings y su
+roadmap en [docs/RATINGS.md](docs/RATINGS.md).
 
 ## Desarrollo
 

@@ -82,6 +82,9 @@ Rendimiento:
   para desarrollo. Las predicciones se cachean (ratings en JSON) para mitigarlo.
 - **Proxy TLS corporativo:** en redes con inspección TLS, configura el CA corporativo
   o usa el modo mock. El adaptador permite ajustar la verificación.
-- **Ratings de ejemplo:** `data/ratings/world_cup.json` es una semilla; el
-  entrenamiento real (StatsBomb + MLE) llegará en un script dedicado.
+- **Ratings entrenados:** `data/ratings/world_cup.json` se genera con
+  `scripts/train_ratings.py` a partir de **todos los partidos internacionales**
+  (martj42), con MLE Poisson ponderado por recencia e importancia del torneo sobre un
+  grafo de rivales conectado entre confederaciones. Las selecciones cuyo nombre no case
+  conservan un rating por defecto. Ver [docs/RATINGS.md](RATINGS.md) para detalles y roadmap.
 - **Refresco por alineaciones** (T−60/−30) y **bot de Telegram** llegan en v1.0/v1.1.
