@@ -1,0 +1,10 @@
+[
+  {"team_id": 9, "attack": 1.62, "defense": 0.70},
+  {"team_id": 2, "attack": 1.55, "defense": 0.72},
+  {"team_id": 6, "attack": 1.48, "defense": 0.78},
+  {"team_id": 10, "attack": 1.45, "defense": 0.80},
+  {"team_id": 1118, "attack": 1.40, "defense": 0.85},
+  {"team_id": 25, "attack": 1.38, "defense": 0.82},
+  {"team_id": 26, "attack": 1.30, "defense": 0.88},
+  {"team_id": 7, "attack": 1.28, "defense": 0.90}
+]
