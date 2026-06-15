@@ -77,3 +77,37 @@ async def test_run_handles_no_matches() -> None:
 def test_parse_args_date() -> None:
     assert _parse_args(["--date", "2026-06-15"]).date == "2026-06-15"
     assert _parse_args([]).date is None
+
+
+async def test_explain_run_includes_breakdown_and_matrix(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import io as _io
+    from datetime import date as _date
+    from pathlib import Path as _Path
+
+    from wcpredictor.application.ports.recent_results_repo import TeamMatchResult
+    from wcpredictor.application.use_cases.predict_today import PredictTodayMatches
+    from wcpredictor.infrastructure.fixtures.recent_results import MockRecentResultsRepository
+    from wcpredictor.infrastructure.leagues.world_cup import WorldCupLeague
+    from wcpredictor.infrastructure.ratings.json_repo import JsonRatingsRepository
+
+    data_dir = _Path(__file__).resolve().parents[2] / "data" / "ratings"
+    recent = {"Spain": [TeamMatchResult(_date(2026, 6, 12), 4, 0, "Rival")]}
+    uc = PredictTodayMatches(
+        fixture_repo=MockFixtureRepository(),
+        ratings_repo=JsonRatingsRepository(data_dir),
+        league=WorldCupLeague(),
+        recent_results_repo=MockRecentResultsRepository(recent=recent),
+        clock=lambda: _date(2026, 6, 15),
+    )
+    from wcpredictor.delivery.cli.launcher import run
+
+    buffer = _io.StringIO()
+    count = await run(uc, ConsoleNotifier(buffer), day=_date(2026, 6, 15), explain=True)
+    out = buffer.getvalue()
+    assert count == 3
+    assert "Desglose por variable" in out
+    assert "Base (ratings)" in out
+    assert "+ Forma reciente" in out
+    assert "Matriz de marcador" in out  # sigue mostrando todo lo demás
