@@ -7,6 +7,7 @@ from wcpredictor.domain.models.performance import (
     PerformanceModel,
     TeamPerformance,
 )
+from wcpredictor.domain.models.team_cards import TeamCardsEstimate, TeamCardsModel
 
 __all__ = [
     "CardsModel",
@@ -15,5 +16,7 @@ __all__ = [
     "MatchPerformance",
     "MatchProbabilities",
     "PerformanceModel",
+    "TeamCardsEstimate",
+    "TeamCardsModel",
     "TeamPerformance",
 ]
