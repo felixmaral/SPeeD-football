@@ -56,7 +56,8 @@ wcpredictor                      # partidos de hoy
 ```
 
 Guía completa en [docs/BETA.md](docs/BETA.md). Entrenamiento de ratings y su
-roadmap en [docs/RATINGS.md](docs/RATINGS.md).
+roadmap en [docs/RATINGS.md](docs/RATINGS.md). Diseño del modelo avanzado basado en
+jugadores en [docs/PLAYER_MODEL.md](docs/PLAYER_MODEL.md).
 
 ## Desarrollo
 
