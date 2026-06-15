@@ -10,13 +10,13 @@ from wcpredictor.infrastructure.ratings.json_repo import JsonRatingsRepository
 
 
 class _RatingsStub(RatingsRepository):
-    def __init__(self, ratings: dict[int, TeamRating]) -> None:
+    def __init__(self, ratings: dict[str, TeamRating]) -> None:
         self._r = ratings
 
-    def get_team_rating(self, namespace: str, team_id: int) -> TeamRating | None:
-        return self._r.get(team_id)
+    def get_rating(self, namespace: str, team_name: str) -> TeamRating | None:
+        return self._r.get(team_name)
 
-    def get_all(self, namespace: str) -> dict[int, TeamRating]:
+    def get_all(self, namespace: str) -> dict[str, TeamRating]:
         return self._r
 
 
@@ -43,8 +43,8 @@ async def test_uses_explicit_day() -> None:
 
 
 async def test_ratings_enrichment_changes_strength() -> None:
-    # El primer partido por defecto es Spain (team_id=1) vs Cape Verde (team_id=2).
-    strong = _RatingsStub({1: TeamRating(team_id=1, attack=3.0, defense=0.4)})
+    # El primer partido por defecto es Spain vs Cape Verde Islands.
+    strong = _RatingsStub({"Spain": TeamRating(team="Spain", attack=3.0, defense=0.4)})
     base = _RatingsStub({})
     p_strong = (await _use_case(strong).execute())[0]
     p_base = (await _use_case(base).execute())[0]

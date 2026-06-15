@@ -3,9 +3,11 @@
 Estructura esperada de `data/ratings/{namespace}.json`:
 
     [
-        {"team_id": 9, "attack": 1.6, "defense": 0.7},
+        {"team": "Spain", "attack": 1.62, "defense": 0.70},
         ...
     ]
+
+La identidad es por nombre de equipo (case-insensitive).
 """
 
 from __future__ import annotations
@@ -16,31 +18,35 @@ from pathlib import Path
 from wcpredictor.application.ports.ratings_repo import RatingsRepository, TeamRating
 
 
+def _normalize(name: str) -> str:
+    return name.strip().lower()
+
+
 class JsonRatingsRepository(RatingsRepository):
     """Lee ratings de equipos desde JSON, cacheando por namespace."""
 
     def __init__(self, base_dir: str | Path) -> None:
         self._base_dir = Path(base_dir)
-        self._cache: dict[str, dict[int, TeamRating]] = {}
+        self._cache: dict[str, dict[str, TeamRating]] = {}
 
-    def get_all(self, namespace: str) -> dict[int, TeamRating]:
+    def get_all(self, namespace: str) -> dict[str, TeamRating]:
         if namespace in self._cache:
             return self._cache[namespace]
 
         path = self._base_dir / f"{namespace}.json"
-        ratings: dict[int, TeamRating] = {}
+        ratings: dict[str, TeamRating] = {}
         if path.is_file():
             raw = json.loads(path.read_text(encoding="utf-8"))
             for item in raw:
                 rating = TeamRating(
-                    team_id=int(item["team_id"]),
+                    team=str(item["team"]),
                     attack=float(item["attack"]),
                     defense=float(item["defense"]),
                 )
-                ratings[rating.team_id] = rating
+                ratings[_normalize(rating.team)] = rating
 
         self._cache[namespace] = ratings
         return ratings
 
-    def get_team_rating(self, namespace: str, team_id: int) -> TeamRating | None:
-        return self.get_all(namespace).get(team_id)
+    def get_rating(self, namespace: str, team_name: str) -> TeamRating | None:
+        return self.get_all(namespace).get(_normalize(team_name))

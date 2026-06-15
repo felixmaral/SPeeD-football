@@ -17,6 +17,10 @@ Todos los cambios notables de este proyecto se documentan aquí, siguiendo
   notificador de consola; plugin de liga del Mundial.
 - Caso de uso `PredictTodayMatches` y lanzador por CLI con `--date`.
 - Configuración vía pydantic-settings con fallback a mock.
+- Entrenamiento de ratings (`scripts/train_ratings.py`) desde **todos los partidos
+  internacionales** (martj42): MLE Poisson ponderado por **recencia × importancia del
+  torneo** y campo neutral, sobre un grafo de rivales conectado entre confederaciones
+  (fuerza de calendario); identidad por nombre. Ver `docs/RATINGS.md`.
 - CI (ruff + mypy strict + pytest, cobertura de dominio ≥80%).
 
 [Unreleased]: https://github.com/felixmaral/speed-world-cup/compare/v0.1.0-beta.1...HEAD
