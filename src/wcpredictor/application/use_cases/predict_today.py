@@ -64,6 +64,13 @@ class PredictTodayMatches:
     recent_results_repo: RecentResultsRepository | None = None
     form_adjuster: FormAdjuster = field(default_factory=FormAdjuster)
     recent_limit: int = 8
+    # H2H: muestra pequeña -> baja sensibilidad, half-life largo y poca confianza.
+    h2h_adjuster: FormAdjuster = field(
+        default_factory=lambda: FormAdjuster(
+            sensitivity=0.25, half_life_days=1095.0, confidence=3.0
+        )
+    )
+    h2h_limit: int = 5
 
     async def execute(self, day: date | None = None) -> list[MatchPrediction]:
         """Devuelve las predicciones de los partidos de `day` (hoy por defecto)."""
@@ -74,6 +81,7 @@ class PredictTodayMatches:
         for match in matches:
             enriched = self._enrich(match)
             enriched = await self._apply_form(enriched, target)
+            enriched = await self._apply_h2h(enriched, target)
             lineup = await self.fixture_repo.get_lineup_availability(match.id)
             predictions.append(self.predictor.predict(enriched, lineup.players))
         return predictions
@@ -90,8 +98,11 @@ class PredictTodayMatches:
             formed = await self._apply_form(base, target)
             if self.recent_results_repo is not None:
                 stages.append(self._stage("+ Forma reciente", formed))
+            with_h2h = await self._apply_h2h(formed, target)
+            if self.recent_results_repo is not None:
+                stages.append(self._stage("+ H2H", with_h2h))
             lineup = await self.fixture_repo.get_lineup_availability(match.id)
-            prediction = self.predictor.predict(formed, lineup.players)
+            prediction = self.predictor.predict(with_h2h, lineup.players)
             out.append(ExplainedPrediction(prediction=prediction, stages=stages))
         return out
 
@@ -125,6 +136,31 @@ class PredictTodayMatches:
         home = await self._form_for(match.home, as_of)
         away = await self._form_for(match.away, as_of)
         return replace(match, home=home, away=away)
+
+    async def _apply_h2h(self, match: Match, as_of: date) -> Match:
+        """Ajusta cada equipo por su historial directo frente al rival concreto."""
+        if self.recent_results_repo is None:
+            return match
+        home = await self._h2h_for(match.home, match.away, as_of)
+        away = await self._h2h_for(match.away, match.home, as_of)
+        return replace(match, home=home, away=away)
+
+    async def _h2h_for(self, team: Team, opponent: Team, as_of: date) -> Team:
+        assert self.recent_results_repo is not None
+        raw = await self.recent_results_repo.get_head_to_head(
+            team.name, opponent.name, self.h2h_limit
+        )
+        results = [
+            RecentResult(
+                when=r.when,
+                goals_for=r.goals_for,
+                goals_against=r.goals_against,
+                opponent_attack=opponent.attack,
+                opponent_defense=opponent.defense,
+            )
+            for r in raw
+        ]
+        return self.h2h_adjuster.adjust(team, results, as_of)
 
     async def _form_for(self, team: Team, as_of: date) -> Team:
         assert self.recent_results_repo is not None
