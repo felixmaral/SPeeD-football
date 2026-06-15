@@ -45,6 +45,18 @@ src/wcpredictor/
 └── config/          # settings (pydantic-settings)
 ```
 
+## Uso (Beta)
+
+```bash
+# Modo mock (sin red ni API key)
+WCPREDICTOR_USE_MOCK=true python -m wcpredictor.delivery.cli.launcher --date 2026-06-15
+
+# Modo real (con API_FOOTBALL_KEY en .env)
+wcpredictor                      # partidos de hoy
+```
+
+Guía completa en [docs/BETA.md](docs/BETA.md).
+
 ## Desarrollo
 
 ```bash
